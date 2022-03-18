@@ -176,7 +176,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <apiDocsUrl>http://localhost:8082/v3/api-docs.yaml</apiDocsUrl>
+                    <apiDocsUrl>http://localhost:8085/v3/api-docs.yaml</apiDocsUrl>
                     <outputFileName>data-transform-api.yaml</outputFileName>
                     <outputDir>openapi-spec</outputDir>
                     <skip>false</skip>
