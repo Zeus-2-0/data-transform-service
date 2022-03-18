@@ -35,7 +35,7 @@ public interface TransactionAPI {
     @Operation(
             method = "GET",
             description = "Get the details of the transaction by its id",
-            tags = {"transaction-storage"}
+            tags = {"transaction"}
     )
     @ApiResponses(
             value = {

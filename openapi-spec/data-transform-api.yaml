@@ -9,7 +9,7 @@ paths:
   /api/v1/transaction/storage/{transactionId}:
     get:
       tags:
-      - transaction-storage
+      - transaction
       description: Get the details of the transaction by its id
       operationId: getTransactionById
       parameters:
