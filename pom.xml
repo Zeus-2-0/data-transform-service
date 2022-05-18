@@ -56,8 +56,8 @@
     <dependencies>
         <dependency>
             <groupId>com.brihaspathee.zeus</groupId>
-            <artifactId>zeus-framework</artifactId>
-            <version>1.0.10</version>
+            <artifactId>zeus-library</artifactId>
+            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
