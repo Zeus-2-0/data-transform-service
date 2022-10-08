@@ -2,10 +2,24 @@ zeus-data-transform:
   api:
     version: 1.0.0
 server:
-  port: 8085
+  port: 8096
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: zeus-data-transform-consumer-group
+      enable-auto-commit: true
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+    # bootstrap-servers: localhost:9092
   datasource:
     url: jdbc:mysql://localhost:3306/datatransformdb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
     username: datatransformapp
