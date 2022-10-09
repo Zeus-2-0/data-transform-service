@@ -1,6 +1,7 @@
 package com.brihaspathee.zeus.broker.consumer;
 
 import com.brihaspathee.zeus.message.ZeusMessagePayload;
+import com.brihaspathee.zeus.service.interfaces.DataTransformer;
 import com.brihaspathee.zeus.web.model.RawTransactionDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -33,6 +34,11 @@ public class RawTransactionListener {
     private final ObjectMapper objectMapper;
 
     /**
+     * Data transformer instance to transform the transaction data
+     */
+    private final DataTransformer dataTransformer;
+
+    /**
      * Listen to kafka topic to receive the raw transaction from transaction origination service
      * @param consumerRecord
      * @return
@@ -55,6 +61,7 @@ public class RawTransactionListener {
                 valueAsString,
                 new TypeReference<ZeusMessagePayload<RawTransactionDto>>(){});
         log.info("Raw Transaction received from the Kafka topic:{}", messagePayload.getPayload());
+        dataTransformer.transformTransaction(messagePayload.getPayload());
         return null;
 
     }
