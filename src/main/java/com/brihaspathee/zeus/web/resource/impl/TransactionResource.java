@@ -25,8 +25,8 @@ public class TransactionResource implements TransactionAPI {
     public ResponseEntity<ZeusApiResponse<TransactionDto>> getTransactionById(String transactionId) {
         ZeusApiResponse<TransactionDto> apiResponse = ZeusApiResponse.<TransactionDto>builder()
                 .response(TransactionDto.builder()
-                        .transactionId("Test Transaction Id")
-                        .transactionSK("Test Transaction SK")
+                        .ztcn("Test Transaction Id")
+                        .zfcn("Test Transaction SK")
                         .build())
                 .build();
         return ResponseEntity.ok(apiResponse);
