@@ -66,6 +66,19 @@ public class PayloadTrackerDetail {
     private String responsePayloadId;
 
     /**
+     * Identifies if the payload is an inbound or outbound payload
+     */
+    @Column(name = "payload_direction_type_code", length = 45, nullable = false)
+    private String payloadDirectionTypeCode;
+
+    /**
+     * The source of the payload when its an inbound payload and the
+     * destination of the payload when it is an outbound payload
+     */
+    @Column(name = "src_dest", length=100, nullable = false)
+    private String sourceDestinations;
+
+    /**
      * The date when the record was created
      */
     @CreationTimestamp
