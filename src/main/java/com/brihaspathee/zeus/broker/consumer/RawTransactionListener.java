@@ -1,5 +1,7 @@
 package com.brihaspathee.zeus.broker.consumer;
 
+import com.brihaspathee.zeus.domain.entity.PayloadTracker;
+import com.brihaspathee.zeus.helper.interfaces.PayloadTrackerHelper;
 import com.brihaspathee.zeus.message.ZeusMessagePayload;
 import com.brihaspathee.zeus.service.interfaces.DataTransformer;
 import com.brihaspathee.zeus.web.model.RawTransactionDto;
@@ -8,6 +10,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.header.Headers;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -39,6 +42,11 @@ public class RawTransactionListener {
     private final DataTransformer dataTransformer;
 
     /**
+     * Payload tracker helper instance to create the payload tracker record
+     */
+    private final PayloadTrackerHelper payloadTrackerHelper;
+
+    /**
      * Listen to kafka topic to receive the raw transaction from transaction origination service
      * @param consumerRecord
      * @return
@@ -61,8 +69,29 @@ public class RawTransactionListener {
                 valueAsString,
                 new TypeReference<ZeusMessagePayload<RawTransactionDto>>(){});
         log.info("Raw Transaction received from the Kafka topic:{}", messagePayload.getPayload());
-        dataTransformer.transformTransaction(messagePayload.getPayload());
+        // dataTransformer.transformTransaction(messagePayload.getPayload());
+        createPayloadTracker(messagePayload);
         return null;
 
+    }
+
+    /**
+     * Create payload tracker record
+     * @param messagePayload
+     * @throws JsonProcessingException
+     */
+    private void createPayloadTracker(ZeusMessagePayload<RawTransactionDto> messagePayload)
+            throws JsonProcessingException {
+        String payloadAsString = objectMapper.writeValueAsString(messagePayload);
+        PayloadTracker payloadTracker = PayloadTracker.builder()
+                .payloadDirectionTypeCode("OUTBOUND")
+                .payload_key("TRANSACTION")
+                .payload_key_type_code(messagePayload.getPayload().getZtcn())
+                .payload(payloadAsString)
+                .payloadId(messagePayload.getPayloadId())
+                .sourceDestinations(StringUtils.join(
+                        messagePayload.getMessageMetadata().getMessageDestination()))
+                .build();
+        payloadTrackerHelper.createPayloadTracker(payloadTracker);
     }
 }
