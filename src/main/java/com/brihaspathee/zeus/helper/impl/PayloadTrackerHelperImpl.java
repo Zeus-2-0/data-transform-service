@@ -32,7 +32,7 @@ public class PayloadTrackerHelperImpl implements PayloadTrackerHelper {
      * @return
      */
     @Override
-    public PayloadTracker createdPayloadTracker(PayloadTracker payloadTracker) {
+    public PayloadTracker createPayloadTracker(PayloadTracker payloadTracker) {
         return payloadTrackerRepository.save(payloadTracker);
     }
 }

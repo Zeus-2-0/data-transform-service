@@ -47,10 +47,17 @@ public class PayloadTracker {
     private String payloadId;
 
     /**
-     * The account number for which the payload was sent
+     * The key for the type of payload, like account number for account payload and
+     * zeus transaction control number for transaction payload
      */
-    @Column(name = "acct_number", columnDefinition = "varchar", length = 50, nullable = false)
-    private String accountNumber;
+    @Column(name = "payload_key", length = 50, columnDefinition = "varchar", nullable = false)
+    private String payload_key;
+
+    /**
+     * Identifies the type of payload like ACCOUNT, TRANSACTION, FILE etc
+     */
+    @Column(name = "payload_key_type_code", length = 45, columnDefinition = "varchar", nullable = false)
+    private String payload_key_type_code;
 
     /**
      * The payload data in JSON format
