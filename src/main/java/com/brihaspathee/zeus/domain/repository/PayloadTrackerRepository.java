@@ -4,6 +4,7 @@ import com.brihaspathee.zeus.domain.entity.PayloadTracker;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -17,4 +18,11 @@ import java.util.UUID;
  */
 @Repository
 public interface PayloadTrackerRepository extends JpaRepository<PayloadTracker, UUID> {
+
+    /**
+     * Get payload tracker by payload id
+     * @param payloadId
+     * @return
+     */
+    Optional<PayloadTracker> findPayloadTrackerByPayloadId(String payloadId);
 }
