@@ -1,6 +1,7 @@
 package com.brihaspathee.zeus.service.interfaces;
 
 import com.brihaspathee.zeus.web.model.RawTransactionDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * Created in Intellij IDEA
@@ -17,5 +18,5 @@ public interface DataTransformer {
      * Service to transform the raw transaction to transaction dto
      * @param rawTransactionDto
      */
-    void transformTransaction(RawTransactionDto rawTransactionDto);
+    void transformTransaction(RawTransactionDto rawTransactionDto) throws JsonProcessingException;
 }

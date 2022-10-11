@@ -4,6 +4,7 @@ import com.brihaspathee.zeus.broker.producer.TransactionProducer;
 import com.brihaspathee.zeus.service.interfaces.DataTransformer;
 import com.brihaspathee.zeus.web.model.RawTransactionDto;
 import com.brihaspathee.zeus.web.model.TransactionDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public class DataTransformerImpl implements DataTransformer {
      * @param rawTransactionDto
      */
     @Override
-    public void transformTransaction(RawTransactionDto rawTransactionDto) {
+    public void transformTransaction(RawTransactionDto rawTransactionDto) throws JsonProcessingException {
         TransactionDto transactionDto = TransactionDto.builder()
                 .zfcn(rawTransactionDto.getZfcn())
                 .ztcn(rawTransactionDto.getZtcn())

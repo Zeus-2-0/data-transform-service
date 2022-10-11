@@ -19,4 +19,11 @@ public interface PayloadTrackerHelper {
      * @return
      */
     PayloadTracker createPayloadTracker(PayloadTracker payloadTracker);
+
+    /**
+     * Get the payload tracker instance using payload id
+     * @param payloadId
+     * @return
+     */
+    PayloadTracker getPayloadTracker(String payloadId);
 }
