@@ -1,6 +1,6 @@
 package com.brihaspathee.zeus.service.interfaces;
 
-import com.brihaspathee.zeus.web.model.RawTransactionDto;
+import com.brihaspathee.zeus.dto.account.RawTransactionDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**

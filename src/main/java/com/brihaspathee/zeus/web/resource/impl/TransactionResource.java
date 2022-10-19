@@ -1,6 +1,6 @@
 package com.brihaspathee.zeus.web.resource.impl;
 
-import com.brihaspathee.zeus.web.model.TransactionDto;
+import com.brihaspathee.zeus.dto.transaction.TransactionDto;
 import com.brihaspathee.zeus.web.resource.interfaces.TransactionAPI;
 import com.brihaspathee.zeus.web.response.ZeusApiResponse;
 import lombok.RequiredArgsConstructor;

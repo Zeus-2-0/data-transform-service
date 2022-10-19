@@ -1,6 +1,6 @@
 package com.brihaspathee.zeus.web.resource.interfaces;
 
-import com.brihaspathee.zeus.web.model.TransactionDto;
+import com.brihaspathee.zeus.dto.transaction.TransactionDto;
 import com.brihaspathee.zeus.web.response.ZeusApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
