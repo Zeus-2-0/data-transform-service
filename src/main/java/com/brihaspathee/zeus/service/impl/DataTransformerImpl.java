@@ -1,9 +1,9 @@
 package com.brihaspathee.zeus.service.impl;
 
 import com.brihaspathee.zeus.broker.producer.TransactionProducer;
+import com.brihaspathee.zeus.dto.account.RawTransactionDto;
+import com.brihaspathee.zeus.dto.transaction.TransactionDto;
 import com.brihaspathee.zeus.service.interfaces.DataTransformer;
-import com.brihaspathee.zeus.web.model.RawTransactionDto;
-import com.brihaspathee.zeus.web.model.TransactionDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,11 +37,11 @@ public class DataTransformerImpl implements DataTransformer {
         TransactionDto transactionDto = TransactionDto.builder()
                 .zfcn(rawTransactionDto.getZfcn())
                 .ztcn(rawTransactionDto.getZtcn())
-                .marketplaceTypeCode(rawTransactionDto.getMarketplaceTypeCode())
-                .lineOfBusinessTypeCode(rawTransactionDto.getLineOfBusinessTypeCode())
-                .stateTypeCode(rawTransactionDto.getStateTypeCode())
-                .businessUnitTypeCode(rawTransactionDto.getBusinessUnitTypeCode())
-                .tradingPartnerId(rawTransactionDto.getTradingPartnerId())
+//                .marketplaceTypeCode(rawTransactionDto.getMarketplaceTypeCode())
+//                .lineOfBusinessTypeCode(rawTransactionDto.getLineOfBusinessTypeCode())
+//                .stateTypeCode(rawTransactionDto.getStateTypeCode())
+//                .businessUnitTypeCode(rawTransactionDto.getBusinessUnitTypeCode())
+//                .tradingPartnerId(rawTransactionDto.getTradingPartnerId())
                 .build();
         transactionProducer.publishTransaction(transactionDto);
     }
