@@ -1,0 +1,52 @@
+url:
+  host:
+    ref-data: http://localhost:8080/api/v1/ref-data/
+zeus-data-transform:
+  api:
+    version: 1.0.0
+server:
+  port: 8096
+spring:
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: zeus-data-transform-consumer-group
+      enable-auto-commit: true
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: "*"
+    # bootstrap-servers: localhost:9092
+  datasource:
+    url: jdbc:mysql://localhost:3306/datatransformdb?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
+    username: datatransformapp
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+  flyway:
+    user: datatransformadmin
+    password: password
+  profiles:
+    active: local, clean
+logging:
+  file:
+    name: logs/local/datatransform.log
+  level:
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+
+
