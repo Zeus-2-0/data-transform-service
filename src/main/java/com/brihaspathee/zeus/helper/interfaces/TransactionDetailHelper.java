@@ -17,7 +17,7 @@ public interface TransactionDetailHelper {
 
     /**
      * Build the transaction detail object from the raw transaction
-     * @param transactionDto
+     * @param dataTransformationDto
      * @param rawTransactionDto
      */
     void buildTransactionDetail(DataTransformationDto dataTransformationDto, RawTransactionDto rawTransactionDto);

@@ -1,4 +1,11 @@
-package com.brihaspathee.zeus.helper.interfaces;/**
+package com.brihaspathee.zeus.helper.interfaces;
+
+import com.brihaspathee.zeus.dto.transaction.TransactionMemberDto;
+import com.brihaspathee.zeus.edi.models.common.LUI;
+
+import java.util.Set;
+
+/**
  * Created in Intellij IDEA
  * User: Balaji Varadharajan
  * Date: 27, October 2022
@@ -6,5 +13,14 @@ package com.brihaspathee.zeus.helper.interfaces;/**
  * Project: Zeus
  * Package Name: com.brihaspathee.zeus.helper.interfaces
  * To change this template use File | Settings | File and Code Template
- */public interface TransactionMemberLanguageHelper {
+ */
+public interface TransactionMemberLanguageHelper {
+
+
+    /**
+     * Build member language
+     * @param memberDto
+     * @param memberLanguages
+     */
+    void buildMemberLanguage(TransactionMemberDto memberDto, Set<LUI> memberLanguages);
 }

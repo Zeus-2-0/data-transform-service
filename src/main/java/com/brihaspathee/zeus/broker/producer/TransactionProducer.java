@@ -65,6 +65,7 @@ public class TransactionProducer {
     /**
      * The method that publishes the messages to the kafka topic
      * @param dataTransformationDto
+     * @throws JsonProcessingException
      */
     public void publishTransaction(DataTransformationDto dataTransformationDto) throws JsonProcessingException {
         String[] messageDestinations = {"TRANSACTION-MANAGER"};

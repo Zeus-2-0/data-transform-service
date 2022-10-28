@@ -1,7 +1,10 @@
 package com.brihaspathee.zeus.web.resource.interfaces;
 
+import com.brihaspathee.zeus.dto.account.RawTransactionDto;
 import com.brihaspathee.zeus.dto.transaction.TransactionDto;
+import com.brihaspathee.zeus.web.model.DataTransformationDto;
 import com.brihaspathee.zeus.web.response.ZeusApiResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -10,9 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created in Intellij IDEA
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Package Name: com.brihaspathee.zeus.web.resource.interfaces
  * To change this template use File | Settings | File and Code Template
  */
-@RequestMapping("/api/v1/transaction/storage")
+@RequestMapping("/api/v1/data-transform")
 @Validated
 public interface TransactionAPI {
 
@@ -50,4 +51,28 @@ public interface TransactionAPI {
     )
     @GetMapping("/{transactionId}")
     ResponseEntity<ZeusApiResponse<TransactionDto>> getTransactionById(@PathVariable("transactionId") String transactionId);
+
+    /**
+     * Process the raw transaction
+     * @param rawTransactionDto
+     * @return
+     */
+    @Operation(
+            method = "POST",
+            description = "Process the raw transaction received",
+            tags = {"transaction"}
+    )
+    @ApiResponses(
+            value = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Successfully processed the transaction",
+                            content = {
+                                    @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ZeusApiResponse.class))
+                            }
+                    )
+            }
+    )
+    @PostMapping
+    ResponseEntity<ZeusApiResponse<DataTransformationDto>> processRawTransaction(@RequestBody RawTransactionDto rawTransactionDto) throws JsonProcessingException;
 }
