@@ -7,6 +7,7 @@ import com.brihaspathee.zeus.helper.interfaces.PayloadTrackerHelper;
 import com.brihaspathee.zeus.message.MessageMetadata;
 import com.brihaspathee.zeus.message.ZeusMessagePayload;
 import com.brihaspathee.zeus.util.ZeusRandomStringGenerator;
+import com.brihaspathee.zeus.web.model.DataTransformationDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class TransactionProducer {
     /**
      * Kafka template to produce and send messages
      */
-    private final KafkaTemplate<String, ZeusMessagePayload<TransactionDto>> kafkaTemplate;
+    private final KafkaTemplate<String, ZeusMessagePayload<DataTransformationDto>> kafkaTemplate;
 
     /**
      * ListenableFutureCallback class that is used after success or failure of publishing the message
@@ -63,22 +64,22 @@ public class TransactionProducer {
 
     /**
      * The method that publishes the messages to the kafka topic
-     * @param transactionDto
+     * @param dataTransformationDto
      */
-    public void publishTransaction(TransactionDto transactionDto) throws JsonProcessingException {
+    public void publishTransaction(DataTransformationDto dataTransformationDto) throws JsonProcessingException {
         String[] messageDestinations = {"TRANSACTION-MANAGER"};
-        ZeusMessagePayload<TransactionDto> messagePayload = ZeusMessagePayload.<TransactionDto>builder()
+        ZeusMessagePayload<DataTransformationDto> messagePayload = ZeusMessagePayload.<DataTransformationDto>builder()
                 .messageMetadata(MessageMetadata.builder()
                         .messageSource("DATA-TRANSFORM-SERVICE")
                         .messageDestination(messageDestinations)
                         .messageCreationTimestamp(LocalDateTime.now())
                         .build())
-                .payload(transactionDto)
+                .payload(dataTransformationDto)
                 .payloadId(ZeusRandomStringGenerator.randomString(15))
                 .build();
-        transactionCallback.setTransactionDto(transactionDto);
+        transactionCallback.setTransactionDto(dataTransformationDto);
         createPayloadTracker(messagePayload);
-        ProducerRecord<String, ZeusMessagePayload<TransactionDto>> producerRecord =
+        ProducerRecord<String, ZeusMessagePayload<DataTransformationDto>> producerRecord =
                 buildProducerRecord(messagePayload);
         kafkaTemplate.send(producerRecord).addCallback(transactionCallback);
         log.info("After the send method is called");
@@ -88,7 +89,7 @@ public class TransactionProducer {
      * The method to build the producer record
      * @param messagePayload
      */
-    private ProducerRecord<String, ZeusMessagePayload<TransactionDto>> buildProducerRecord(ZeusMessagePayload<TransactionDto> messagePayload){
+    private ProducerRecord<String, ZeusMessagePayload<DataTransformationDto>> buildProducerRecord(ZeusMessagePayload<DataTransformationDto> messagePayload){
         RecordHeader messageHeader = new RecordHeader("payload-id",
                 "test payload id".getBytes());
         return new ProducerRecord<>("ZEUS.TRANSACTION.PROCESSOR",
@@ -103,13 +104,13 @@ public class TransactionProducer {
      * @param messagePayload
      * @throws JsonProcessingException
      */
-    private void createPayloadTracker(ZeusMessagePayload<TransactionDto> messagePayload)
+    private void createPayloadTracker(ZeusMessagePayload<DataTransformationDto> messagePayload)
             throws JsonProcessingException {
         String payloadAsString = objectMapper.writeValueAsString(messagePayload);
         PayloadTracker payloadTracker = PayloadTracker.builder()
                 .payloadDirectionTypeCode("OUTBOUND")
                 .payload_key("TRANSACTION")
-                .payload_key_type_code(messagePayload.getPayload().getZtcn())
+                .payload_key_type_code(messagePayload.getPayload().getTransactionDto().getZtcn())
                 .payload(payloadAsString)
                 .payloadId(messagePayload.getPayloadId())
                 .sourceDestinations(StringUtils.join(
