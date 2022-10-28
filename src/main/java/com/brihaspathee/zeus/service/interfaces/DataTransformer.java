@@ -1,6 +1,7 @@
 package com.brihaspathee.zeus.service.interfaces;
 
 import com.brihaspathee.zeus.dto.account.RawTransactionDto;
+import com.brihaspathee.zeus.web.model.DataTransformationDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
@@ -17,6 +18,8 @@ public interface DataTransformer {
     /**
      * Service to transform the raw transaction to transaction dto
      * @param rawTransactionDto
+     * @return
+     * @throws JsonProcessingException
      */
-    void transformTransaction(RawTransactionDto rawTransactionDto) throws JsonProcessingException;
+    DataTransformationDto transformTransaction(RawTransactionDto rawTransactionDto) throws JsonProcessingException;
 }

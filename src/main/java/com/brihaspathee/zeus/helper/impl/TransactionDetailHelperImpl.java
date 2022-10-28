@@ -1,15 +1,21 @@
 package com.brihaspathee.zeus.helper.impl;
 
 import com.brihaspathee.zeus.dto.account.RawTransactionDto;
+import com.brihaspathee.zeus.dto.transaction.TransactionAttributeDto;
 import com.brihaspathee.zeus.dto.transaction.TransactionDetailDto;
 import com.brihaspathee.zeus.dto.transaction.TransactionDto;
+import com.brihaspathee.zeus.dto.transaction.TransactionRateDto;
 import com.brihaspathee.zeus.edi.models.common.DTP;
 import com.brihaspathee.zeus.edi.models.common.REF;
 import com.brihaspathee.zeus.edi.models.enrollment.Loop2000;
 import com.brihaspathee.zeus.edi.models.enrollment.Loop2300;
+import com.brihaspathee.zeus.edi.models.enrollment.Loop2710;
 import com.brihaspathee.zeus.edi.models.enrollment.Transaction;
 import com.brihaspathee.zeus.exception.PrimaryMemberNotFoundException;
+import com.brihaspathee.zeus.helper.interfaces.ReferenceDataServiceHelper;
 import com.brihaspathee.zeus.helper.interfaces.TransactionDetailHelper;
+import com.brihaspathee.zeus.reference.data.model.XWalkRequest;
+import com.brihaspathee.zeus.reference.data.model.XWalkResponse;
 import com.brihaspathee.zeus.web.model.DataTransformationDto;
 import com.brihaspathee.zeus.web.model.TransformationMessage;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +23,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -34,6 +43,11 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class TransactionDetailHelperImpl implements TransactionDetailHelper {
+
+    /**
+     * Reference data service helper to call the reference data service
+     */
+    private final ReferenceDataServiceHelper referenceDataServiceHelper;
 
     /**
      * Build the transaction detail object from the raw transaction
@@ -57,6 +71,10 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
         getEndDate(dataTransformationDto, primarySubscriber);
         // Get and set the maintenance effective date
         getMaintenanceEffectiveDate(dataTransformationDto, primarySubscriber);
+        // Get and set the policy amounts
+        getPolicyAmounts(dataTransformationDto, primarySubscriber);
+        // Get and set all the transaction attributes
+        getTransactionAttributes(dataTransformationDto, primarySubscriber);
     }
 
     /**
@@ -66,7 +84,7 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
      */
     private Loop2000 getPrimaryMember(RawTransactionDto rawTransactionDto){
         return rawTransactionDto.getTransaction().getMembers().stream().filter(member ->
-                member.getMemberDetail().getIns02().equals("018")).findFirst().orElseThrow(() -> {
+                member.getMemberDetail().getIns02().equals("18")).findFirst().orElseThrow(() -> {
             throw new PrimaryMemberNotFoundException("Primary member not found for transaction:" + rawTransactionDto.getZtcn());
         });
     }
@@ -78,16 +96,22 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
      */
     private void getTransactionType(DataTransformationDto dataTransformationDto, Loop2000 primaryMember){
         String transactionType = primaryMember.getMemberDetail().getIns03();
-        if(transactionType.equals("021")){
-            transactionType = "ADD";
-        }else if (transactionType.equals("001")){
-            transactionType = "CHANGE";
-        }else if (transactionType.equals("025")){
-            transactionType = "REINSTATEMENT";
-        }else {
-            transactionType = "CANCEL-TERM";
-        }
-        dataTransformationDto.getTransactionDto().getTransactionDetail().setTransactionTypeCode(transactionType);
+        XWalkResponse xWalkResponse = referenceDataServiceHelper.getInternalRefData(transactionType,
+                "Transaction",
+                "EDI-834");
+//        if(transactionType.equals("021")){
+//            transactionType = "ADD";
+//        }else if (transactionType.equals("001")){
+//            transactionType = "CHANGE";
+//        }else if (transactionType.equals("025")){
+//            transactionType = "REINSTATEMENT";
+//        }else {
+//            transactionType = "CANCEL-TERM";
+//        }
+        dataTransformationDto.getTransactionDto()
+                .getTransactionDetail()
+                .setTransactionTypeCode(
+                        xWalkResponse.getInternalListCode());
     }
 
     /**
@@ -176,7 +200,7 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
         }else{
             dataTransformationDto.getTransactionDto()
                     .getTransactionDetail()
-                    .setEffectiveDate(LocalDate.parse(effectiveDate.get().getDtp02(),DateTimeFormatter.BASIC_ISO_DATE));
+                    .setEffectiveDate(LocalDate.parse(effectiveDate.get().getDtp03(),DateTimeFormatter.BASIC_ISO_DATE));
         }
     }
 
@@ -206,10 +230,10 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
                     .messageType("CRITICAL")
                     .build();
             dataTransformationDto.getTransformationMessages().add(transformationMessage);
-        }else{
+        }else if (endDate.isPresent()){
             dataTransformationDto.getTransactionDto()
                     .getTransactionDetail()
-                    .setEffectiveDate(LocalDate.parse(endDate.get().getDtp02(),DateTimeFormatter.BASIC_ISO_DATE));
+                    .setEffectiveDate(LocalDate.parse(endDate.get().getDtp03(),DateTimeFormatter.BASIC_ISO_DATE));
         }
     }
 
@@ -228,7 +252,126 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
         }
         if(maintenanceDate.isPresent()){
             dataTransformationDto.getTransactionDto().getTransactionDetail().setMaintenanceEffectiveDate(
-                    LocalDate.parse(maintenanceDate.get().getDtp02(),DateTimeFormatter.BASIC_ISO_DATE));
+                    LocalDate.parse(maintenanceDate.get().getDtp03(),DateTimeFormatter.BASIC_ISO_DATE));
         }
+    }
+
+    /**
+     * Get the policy amounts from the transaction
+     * @param dataTransformationDto
+     * @param primaryMember
+     */
+    private void getPolicyAmounts(DataTransformationDto dataTransformationDto, Loop2000 primaryMember){
+        List<TransactionRateDto> transactionRateDtos = new ArrayList<>();
+        primaryMember.getReportingCategories().getReportingCategories().stream().forEach(reportingCategory -> {
+            String reportingCategoryName = reportingCategory
+                    .getReportingCategoryDetails().getReportingCategory().getN102();
+            switch (reportingCategoryName){
+                case "PRE AMT TOT":
+                    transactionRateDtos.add(extractPolicyAmount(reportingCategory, "PREAMTOT"));
+                    break;
+                case "TOT RES AMT":
+                    transactionRateDtos.add(extractPolicyAmount(reportingCategory, "TOTRESAMT"));
+                    break;
+                case "APTC AMT":
+                    transactionRateDtos.add(extractPolicyAmount(reportingCategory, "APTCAMT"));
+                    break;
+                case "OTH PAY AMT1":
+                    transactionRateDtos.add(extractPolicyAmount(reportingCategory, "OTHERPAYAMT1"));
+                    break;
+                case "OTH PAY AMT2":
+                    transactionRateDtos.add(extractPolicyAmount(reportingCategory, "OTHERPAYAMT2"));
+                    break;
+                case "CSR AMT":
+                    transactionRateDtos.add(extractPolicyAmount(reportingCategory, "CSRAMT"));
+                    break;
+            }
+        });
+        if(transactionRateDtos.size() > 0){
+            dataTransformationDto.getTransactionDto().setTransactionRates(transactionRateDtos);
+        }
+    }
+
+    /**
+     * Extract the policy amounts from the respective reporting category
+     * @param reportingCategory
+     * @param rateTypeCode
+     * @return
+     */
+    private TransactionRateDto extractPolicyAmount(Loop2710 reportingCategory, String rateTypeCode) {
+        String transactionRate = reportingCategory
+                .getReportingCategoryDetails()
+                .getCategoryReference()
+                .iterator().next()
+                .getRef02();
+        TransactionRateDto transactionRateDto = TransactionRateDto.builder()
+                .rateTypeCode(rateTypeCode)
+                .transactionRate(BigDecimal.valueOf(Double.valueOf(transactionRate)))
+                .build();
+        DTP rateDates = reportingCategory.getReportingCategoryDetails().getCategoryDate();
+        if(rateDates.getDtp02().equals("D8")){
+            transactionRateDto.setRateStartDate(LocalDate.parse(rateDates.getDtp03(), DateTimeFormatter.BASIC_ISO_DATE));
+        }else{
+            String rateStartDate = rateDates.getDtp02().split("-")[0];
+            String rateEndDate = rateDates.getDtp02().split("-")[1];
+            transactionRateDto.setRateStartDate(LocalDate.parse(rateStartDate, DateTimeFormatter.BASIC_ISO_DATE));
+            transactionRateDto.setRateEndDate(LocalDate.parse(rateEndDate, DateTimeFormatter.BASIC_ISO_DATE));
+        }
+        return transactionRateDto;
+    }
+
+    /**
+     * Get all the transaction attributes
+     * @param dataTransformationDto
+     * @param primaryMember
+     */
+    private void getTransactionAttributes(DataTransformationDto dataTransformationDto, Loop2000 primaryMember){
+        List<TransactionAttributeDto> transactionAttributeDtos = new ArrayList<>();
+        primaryMember.getReportingCategories().getReportingCategories().stream().forEach(reportingCategory -> {
+            String reportingCategoryName = reportingCategory
+                    .getReportingCategoryDetails().getReportingCategory().getN102();
+            switch (reportingCategoryName){
+                case "SOURCE EXCHANGE ID":
+                    transactionAttributeDtos.add(extractTransactionAttribute(reportingCategory, "SRCEXCHID"));
+                    break;
+                case "ADDL MAINT REASON":
+                    transactionAttributeDtos.add(extractTransactionAttribute(reportingCategory, "AMRC"));
+                    break;
+                case "SEP REASON":
+                    transactionAttributeDtos.add(extractTransactionAttribute(reportingCategory, "SEPREASON"));
+                    break;
+                case "REQUEST SUBMIT TIMESTAMP":
+                    transactionAttributeDtos.add(extractTransactionAttribute(reportingCategory, "REQSBTTMS"));
+                    break;
+                case "APPLICATION ID AND ORIGIN":
+                    transactionAttributeDtos.add(extractTransactionAttribute(reportingCategory, "APPID"));
+                    break;
+                case "RATING AREA":
+                    transactionAttributeDtos.add(extractTransactionAttribute(reportingCategory, "RATINGAREA"));
+                    break;
+            }
+            if(transactionAttributeDtos.size() > 0){
+                dataTransformationDto.getTransactionDto().setTransactionAttributes(transactionAttributeDtos);
+            }
+        });
+    }
+
+    /**
+     * Extract the attribute values
+     * @param reportingCategory
+     * @param attributeType
+     * @return
+     */
+    private TransactionAttributeDto extractTransactionAttribute(Loop2710 reportingCategory, String attributeType){
+        String attributeValue = reportingCategory
+                .getReportingCategoryDetails()
+                .getCategoryReference()
+                .iterator().next()
+                .getRef02();
+        TransactionAttributeDto transactionAttributeDto = TransactionAttributeDto.builder()
+                .transactionAttributeTypeCode(attributeType)
+                .transactionAttributeValue(attributeValue)
+                .build();
+        return transactionAttributeDto;
     }
 }

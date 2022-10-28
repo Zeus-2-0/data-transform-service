@@ -5,10 +5,11 @@ import com.brihaspathee.zeus.dto.account.RawTransactionDto;
 import com.brihaspathee.zeus.dto.transaction.TransactionDetailDto;
 import com.brihaspathee.zeus.dto.transaction.TransactionDto;
 import com.brihaspathee.zeus.dto.transaction.TransactionTradingPartnerDto;
-import com.brihaspathee.zeus.helper.interfaces.TransactionDetailHelper;
+import com.brihaspathee.zeus.helper.interfaces.*;
 import com.brihaspathee.zeus.service.interfaces.DataTransformer;
 import com.brihaspathee.zeus.web.model.DataTransformationDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,19 +37,60 @@ public class DataTransformerImpl implements DataTransformer {
     private final TransactionDetailHelper transactionDetailHelper;
 
     /**
+     * Transaction sponsor helper instance
+     */
+    private final TransactionSponsorHelper transactionSponsorHelper;
+
+    /**
+     * Transaction payer helper instance
+     */
+    private final TransactionPayerHelper transactionPayerHelper;
+
+    /**
+     * Transaction broker helper instance
+     */
+    private final TransactionBrokerHelper transactionBrokerHelper;
+
+    /**
+     * Transaction member helper instance
+     */
+    private final TransactionMemberHelper transactionMemberHelper;
+
+    /**
      * Transaction producer to send the transformed transaction
      */
     private final TransactionProducer transactionProducer;
 
     /**
-     * Transforms the transaction
+     * Service to transform the raw transaction to transaction dto
      * @param rawTransactionDto
+     * @return
+     * @throws JsonProcessingException
      */
     @Override
-    public void transformTransaction(RawTransactionDto rawTransactionDto) throws JsonProcessingException {
+    public DataTransformationDto transformTransaction(RawTransactionDto rawTransactionDto) throws JsonProcessingException {
+        // Construct the data transformation dto objet
+        // This also populates the trading partner details of the transaction
         DataTransformationDto dataTransformationDto = constructDataTransformationObject(rawTransactionDto);
+        // build the transaction details
         transactionDetailHelper.buildTransactionDetail(dataTransformationDto, rawTransactionDto);
+        // build the sponsor detail received in the transaction
+        transactionSponsorHelper.buildSponsor(dataTransformationDto, rawTransactionDto);
+        // TODO - Build the payer detail
+        transactionPayerHelper.buildTransactionPayer(dataTransformationDto, rawTransactionDto);
+        // todo - Build the broker details
+        transactionBrokerHelper.buildTransactionBroker(dataTransformationDto, rawTransactionDto);
+        // todo - Build the member details
+        rawTransactionDto.getTransaction().getMembers().stream().forEach(member -> {
+            transactionMemberHelper.buildMemberDetail(dataTransformationDto, member);
+        });
+        log.info("Data Transformation DTO:{}", dataTransformationDto);
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.findAndRegisterModules();
+        String data = objectMapper.writeValueAsString(dataTransformationDto);
+        log.info("Data Transformation DTO as string:{}", data);
         transactionProducer.publishTransaction(dataTransformationDto);
+        return dataTransformationDto;
     }
 
     /**
@@ -64,7 +106,14 @@ public class DataTransformerImpl implements DataTransformer {
                         .transactionReceivedDate(LocalDateTime.now())
                         .transactionSourceTypeCode("MARKETPLACE")
                         .transactionDetail(TransactionDetailDto.builder().build())
-                        .tradingPartnerDto(TransactionTradingPartnerDto.builder().build())
+                        .tradingPartnerDto(TransactionTradingPartnerDto.builder()
+                                .tradingPartnerId(rawTransactionDto.getTradingPartnerId())
+                                .lineOfBusinessTypeCode(rawTransactionDto.getLineOfBusinessTypeCode())
+                                .marketplaceTypeCode(rawTransactionDto.getMarketplaceTypeCode())
+                                .stateTypeCode(rawTransactionDto.getStateTypeCode())
+                                .businessTypeCode(rawTransactionDto.getLineOfBusinessTypeCode())
+                                .build())
+                        .members(new ArrayList<>())
                         .build())
                 .transformationMessages(new ArrayList<>())
                 .build();

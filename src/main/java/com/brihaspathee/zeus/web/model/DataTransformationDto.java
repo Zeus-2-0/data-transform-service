@@ -30,4 +30,16 @@ public class DataTransformationDto {
      * Messages that were created while raw transaction is transformed
      */
     private List<TransformationMessage> transformationMessages;
+
+    /**
+     * toString method
+     * @return
+     */
+    @Override
+    public String toString() {
+        return "DataTransformationDto{" +
+                "transactionDto=" + transactionDto +
+                ", transformationMessages=" + transformationMessages +
+                '}';
+    }
 }
