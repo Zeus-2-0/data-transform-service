@@ -117,7 +117,7 @@ public class TransactionMemberHelperImpl implements TransactionMemberHelper {
         transactionMemberDto.setTransactionTypeCode(referenceDataServiceHelper.getInternalRefData(
                 transactionTypeCode, "Transaction", "EDI-834")
                 .getInternalListCode());
-        if(reasonTypeCode != null){
+        if(reasonTypeCode != null && !reasonTypeCode.equals("")){
             transactionMemberDto.setReasonTypeCode(referenceDataServiceHelper.getInternalRefData(
                     reasonTypeCode, "Reason","EDI-834")
                     .getInternalListCode());

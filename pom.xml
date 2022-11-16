@@ -57,7 +57,7 @@
         <dependency>
             <groupId>com.brihaspathee.zeus</groupId>
             <artifactId>zeus-library</artifactId>
-            <version>1.0.54</version>
+            <version>1.0.57</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>

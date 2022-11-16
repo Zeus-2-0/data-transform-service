@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,6 +135,7 @@ public class TransactionMemberAlternateContactHelperImpl implements TransactionM
             alternateContactDto.setStateTypeCode(cityStateZip.getN402());
             alternateContactDto.setZipCode(cityStateZip.getN403());
         }
+        alternateContactDto.setReceivedDate(LocalDateTime.now());
         return alternateContactDto;
     }
 
