@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -51,6 +52,7 @@ public class TransactionMemberLanguageHelperImpl implements TransactionMemberLan
                 TransactionMemberLanguageDto memberLanguageDto = TransactionMemberLanguageDto.builder()
                         .languageTypeCode(languageResponse.getInternalListCode())
                         .languageCode(language.getLui02())
+                        .receivedDate(LocalDateTime.now())
                         .build();
                 memberLanguageDtos.add(memberLanguageDto);
 

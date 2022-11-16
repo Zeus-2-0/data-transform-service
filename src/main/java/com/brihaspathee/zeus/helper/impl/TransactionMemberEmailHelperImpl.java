@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +55,7 @@ public class TransactionMemberEmailHelperImpl implements TransactionMemberEmailH
         if(commValue != null && commType.equals("EM")){
             TransactionMemberEmailDto memberEmailDto = TransactionMemberEmailDto.builder()
                     .email(commValue)
+                    .receivedDate(LocalDateTime.now())
                     .build();
             emailDtos.add(memberEmailDto);
         }

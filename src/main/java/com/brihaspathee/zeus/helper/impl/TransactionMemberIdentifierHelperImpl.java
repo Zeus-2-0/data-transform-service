@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -46,6 +47,7 @@ public class TransactionMemberIdentifierHelperImpl implements TransactionMemberI
             TransactionMemberIdentifierDto identifierDto = TransactionMemberIdentifierDto.builder()
                     .identifierTypeCode(identifierResponse.getInternalListCode())
                     .identifierValue(exchangeSubId)
+                    .receivedDate(LocalDateTime.now())
                     .build();
             transactionMemberDto.getIdentifiers().add(identifierDto);
         }
@@ -59,6 +61,7 @@ public class TransactionMemberIdentifierHelperImpl implements TransactionMemberI
             TransactionMemberIdentifierDto identifierDto = TransactionMemberIdentifierDto.builder()
                     .identifierTypeCode(xWalkResponse.getInternalListCode())
                     .identifierValue(exchangeMemberId.get().getRef02())
+                    .receivedDate(LocalDateTime.now())
                     .build();
             transactionMemberDto.getIdentifiers().add(identifierDto);
         }
@@ -70,6 +73,7 @@ public class TransactionMemberIdentifierHelperImpl implements TransactionMemberI
             TransactionMemberIdentifierDto identifierDto = TransactionMemberIdentifierDto.builder()
                     .identifierTypeCode(xWalkResponse.getInternalListCode())
                     .identifierValue(memberIdentifier)
+                    .receivedDate(LocalDateTime.now())
                     .build();
             transactionMemberDto.getIdentifiers().add(identifierDto);
         }
