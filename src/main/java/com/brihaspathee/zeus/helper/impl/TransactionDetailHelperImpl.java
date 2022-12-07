@@ -71,7 +71,7 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
         getEndDate(dataTransformationDto, primarySubscriber);
         // Get and set the maintenance effective date
         getMaintenanceEffectiveDate(dataTransformationDto, primarySubscriber);
-        // Get and set the policy amounts
+        // Get and set the policy amounts (This where the amounts like PREAMTTOT are set)
         getPolicyAmounts(dataTransformationDto, primarySubscriber);
         // Get and set all the transaction attributes
         getTransactionAttributes(dataTransformationDto, primarySubscriber);
@@ -268,7 +268,7 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
                     .getReportingCategoryDetails().getReportingCategory().getN102();
             switch (reportingCategoryName){
                 case "PRE AMT TOT":
-                    transactionRateDtos.add(extractPolicyAmount(reportingCategory, "PREAMTOT"));
+                    transactionRateDtos.add(extractPolicyAmount(reportingCategory, "PREAMTTOT"));
                     break;
                 case "TOT RES AMT":
                     transactionRateDtos.add(extractPolicyAmount(reportingCategory, "TOTRESAMT"));
