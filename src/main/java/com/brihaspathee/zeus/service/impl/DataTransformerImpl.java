@@ -111,7 +111,7 @@ public class DataTransformerImpl implements DataTransformer {
                                 .lineOfBusinessTypeCode(rawTransactionDto.getLineOfBusinessTypeCode())
                                 .marketplaceTypeCode(rawTransactionDto.getMarketplaceTypeCode())
                                 .stateTypeCode(rawTransactionDto.getStateTypeCode())
-                                .businessTypeCode(rawTransactionDto.getLineOfBusinessTypeCode())
+                                .businessTypeCode(rawTransactionDto.getBusinessUnitTypeCode())
                                 .build())
                         .members(new ArrayList<>())
                         .build())
