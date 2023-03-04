@@ -37,6 +37,7 @@ spring:
   flyway:
     user: datatransformadmin
     password: password
+    clean-disabled: false
   profiles:
     active: local, clean
 logging:

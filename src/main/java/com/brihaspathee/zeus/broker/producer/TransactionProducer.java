@@ -82,7 +82,7 @@ public class TransactionProducer {
         createPayloadTracker(messagePayload);
         ProducerRecord<String, ZeusMessagePayload<DataTransformationDto>> producerRecord =
                 buildProducerRecord(messagePayload);
-        kafkaTemplate.send(producerRecord).addCallback(transactionCallback);
+        kafkaTemplate.send(producerRecord);//.addCallback(transactionCallback);
         log.info("After the send method is called");
     }
 
