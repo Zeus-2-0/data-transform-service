@@ -55,7 +55,9 @@ public interface TransactionAPI {
     /**
      * Process the raw transaction
      * @param rawTransactionDto
+     * @param sendToTransactionManager
      * @return
+     * @throws JsonProcessingException
      */
     @Operation(
             method = "POST",
@@ -73,6 +75,7 @@ public interface TransactionAPI {
                     )
             }
     )
-    @PostMapping
-    ResponseEntity<ZeusApiResponse<DataTransformationDto>> processRawTransaction(@RequestBody RawTransactionDto rawTransactionDto) throws JsonProcessingException;
+    @PostMapping("/{sendToTransactionManager}")
+    ResponseEntity<ZeusApiResponse<DataTransformationDto>> processRawTransaction(@RequestBody RawTransactionDto rawTransactionDto,
+                                                                                 @PathVariable boolean sendToTransactionManager) throws JsonProcessingException;
 }

@@ -18,8 +18,10 @@ public interface DataTransformer {
     /**
      * Service to transform the raw transaction to transaction dto
      * @param rawTransactionDto
+     * @param sendToTransactionManager
      * @return
      * @throws JsonProcessingException
      */
-    DataTransformationDto transformTransaction(RawTransactionDto rawTransactionDto) throws JsonProcessingException;
+    DataTransformationDto transformTransaction(RawTransactionDto rawTransactionDto,
+                                               boolean sendToTransactionManager) throws JsonProcessingException;
 }

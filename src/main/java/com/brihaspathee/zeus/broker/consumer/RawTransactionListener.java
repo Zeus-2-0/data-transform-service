@@ -81,7 +81,7 @@ public class RawTransactionListener {
                 valueAsString,
                 new TypeReference<ZeusMessagePayload<RawTransactionDto>>(){});
         log.info("Raw Transaction received from the Kafka topic:{}", messagePayload.getPayload());
-        dataTransformer.transformTransaction(messagePayload.getPayload());
+        dataTransformer.transformTransaction(messagePayload.getPayload(), true);
         PayloadTracker payloadTracker = createPayloadTracker(messagePayload);
         return createAcknowledgment(messagePayload, payloadTracker);
 
