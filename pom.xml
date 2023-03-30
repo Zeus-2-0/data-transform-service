@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.brihaspathee.zeus</groupId>
     <artifactId>data-transform-service</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <name>Data Transformation Service</name>
     <description>Service that takes raw EDI data and converts to ZEUS format</description>
     <url>http://www.brihaspathee.com</url>
