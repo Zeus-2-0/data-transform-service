@@ -26,9 +26,8 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created in Intellij IDEA
@@ -61,6 +60,8 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
         Loop2000 primarySubscriber = getPrimaryMember(rawTransactionDto);
         // Get and Set the transaction type
         getTransactionType(dataTransformationDto, primarySubscriber);
+        // Get and Set the coverage type (Family or Dependent)
+        getCoverageType(dataTransformationDto, primarySubscriber);
         // Get and Set the Plan id and CSR Variant from the transaction
         getPlanId(dataTransformationDto, primarySubscriber);
         // Get and Set the group policy id
@@ -112,6 +113,28 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
                 .getTransactionDetail()
                 .setTransactionTypeCode(
                         xWalkResponse.getInternalListCode());
+    }
+
+    /**
+     * Set the coverage type that was received in the transaction
+     * @param dataTransformationDto
+     * @param primaryMember
+     */
+    private void getCoverageType(DataTransformationDto dataTransformationDto,
+                                 Loop2000 primaryMember){
+        Optional<Loop2300> optionalHC = primaryMember.getHealthCoverages()
+                .stream()
+                .findFirst();
+        String coverageTypeCode = "FAM";
+        if(optionalHC.isPresent()){
+            Loop2300 healthCoverage = optionalHC.get();
+            if(healthCoverage.getHealthCoverage() != null){
+                coverageTypeCode = healthCoverage.getHealthCoverage().getHd05();
+            }
+        }
+        dataTransformationDto.getTransactionDto()
+                .getTransactionDetail()
+                .setCoverageTypeCode(coverageTypeCode);
     }
 
     /**
@@ -263,6 +286,7 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
      */
     private void getPolicyAmounts(DataTransformationDto dataTransformationDto, Loop2000 primaryMember){
         List<TransactionRateDto> transactionRateDtos = new ArrayList<>();
+        Map<LocalDate, String> csrVariantMap = new HashMap<>();
         primaryMember.getReportingCategories().getReportingCategories().stream().forEach(reportingCategory -> {
             String reportingCategoryName = reportingCategory
                     .getReportingCategoryDetails().getReportingCategory().getN102();
@@ -285,10 +309,50 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
                 case "CSR AMT":
                     transactionRateDtos.add(extractPolicyAmount(reportingCategory, "CSRAMT"));
                     break;
+                case "CSR ELIG CAT":
+                    mapCSRVariant(csrVariantMap, reportingCategory);
             }
         });
         if(transactionRateDtos.size() > 0){
+            if(csrVariantMap.isEmpty()){
+                // this means that there is only one CSR Variant received in the transaction, and it can be set for all the rate types
+                transactionRateDtos.stream().forEach(rateDto -> {
+                    rateDto.setCsrVariant(dataTransformationDto.getTransactionDto().getTransactionDetail().getCsrVariant());
+                });
+            }else{
+                // there should be CSR Variant for each of the PREAMTTOT rate start date
+                for (Map.Entry<LocalDate, String> csrEntry:csrVariantMap.entrySet()) {
+                    String csrVariant = csrEntry.getValue();
+                    LocalDate csrDate = csrEntry.getKey();
+                    // Find transaction rates that have the same date as that of the CSR Variant and set the
+                    // CSR Variant on each rate
+                    transactionRateDtos.stream()
+                                    .filter(rateDto -> csrDate.equals(rateDto.getRateStartDate()))
+                                    .collect(Collectors.toList())
+                                    .stream().forEach(rateDto -> rateDto.setCsrVariant(csrVariant));
+                }
+            }
             dataTransformationDto.getTransactionDto().setTransactionRates(transactionRateDtos);
+        }
+    }
+
+    /**
+     * Map that contains the CSR Variant and its effective date
+     * @param csrVariantMap
+     * @param reportingCategory
+     */
+    private void mapCSRVariant(Map<LocalDate, String> csrVariantMap, Loop2710 reportingCategory) {
+        String csrVariant = reportingCategory
+                .getReportingCategoryDetails()
+                .getCategoryReference()
+                .iterator().next()
+                .getRef02();
+        DTP csrVariantDate = reportingCategory.getReportingCategoryDetails().getCategoryDate();
+        if(csrVariantDate.getDtp02().equals("D8")){
+            csrVariantMap.put(LocalDate.parse(csrVariantDate.getDtp03(), DateTimeFormatter.BASIC_ISO_DATE), csrVariant);
+        }else{
+            String csrVariantStartDate = csrVariantDate.getDtp02().split("-")[0];
+            csrVariantMap.put(LocalDate.parse(csrVariantStartDate, DateTimeFormatter.BASIC_ISO_DATE), csrVariant);
         }
     }
 
@@ -374,4 +438,5 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
                 .build();
         return transactionAttributeDto;
     }
+
 }

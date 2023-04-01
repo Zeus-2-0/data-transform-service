@@ -1,0 +1,1331 @@
+{
+  "testClassName": "TransactionResourceIntTest",
+  "testMethods": [
+    {
+      "testMethodName": "testProcessTransaction",
+      "testData": [
+        {
+          "testData": {
+            "exceptionExpected": false,
+            "httpStatusCode": "200",
+            "rawTransactionDto": {
+              "ztcn":"SOXTVOXMQM72AOP",
+              "zfcn":"QCHDQJ7HJZULPOY",
+              "tradingPartnerId":"21663",
+              "lineOfBusinessTypeCode":"HIX",
+              "stateTypeCode":"FL",
+              "businessUnitTypeCode":"MP_FL",
+              "marketplaceTypeCode":"FFM",
+              "transaction":{
+                "transactionSequence":1,
+                "st01":"834",
+                "st02":"137567502",
+                "st03":"005010X220A1",
+                "se01":"104",
+                "se02":"137567502",
+                "beginningSegment":{
+                  "bgn01":"00",
+                  "bgn02":"137567502",
+                  "bgn03":"20200127",
+                  "bgn04":"210516",
+                  "bgn05":"ET",
+                  "bgn06":"",
+                  "bgn08":"2"
+                },
+                "transactionSetPolicyNumber":{
+                  "ref01":"",
+                  "ref02":""
+                },
+                "fileEffectiveDates":[
+                  {
+                    "dtp01":"",
+                    "dtp02":"",
+                    "dtp03":""
+                  }
+                ],
+                "transactionSetControls":[
+                  {
+                    "qty01":"TO",
+                    "qty02":"2"
+                  },
+                  {
+                    "qty01":"DT",
+                    "qty02":"1"
+                  }
+                ],
+                "sponsor":{
+                  "sponsor":{
+                    "n101":"P5",
+                    "n102":"Peter A Peterson",
+                    "n103":"FI",
+                    "n104":"166492101"
+                  }
+                },
+                "payer":{
+                  "payer":{
+                    "n101":"IN",
+                    "n102":"Ambetter from Sunshine Health",
+                    "n103":"FI",
+                    "n104":"060641618"
+                  }
+                },
+                "brokers":[
+                  {
+                    "broker":{
+                      "n101":"BO",
+                      "n102":"Horacio  Sequeira",
+                      "n103":"94",
+                      "n104":"17845067"
+                    },
+                    "accountDetails":{
+                      "brokerAccount":{
+                        "act01":"acct1"
+                      }
+                    }
+                  }
+                ],
+                "members":[
+                  {
+                    "memberDetail":{
+                      "ins01":"Y",
+                      "ins02":"18",
+                      "ins03":"021",
+                      "ins04":"EC",
+                      "ins05":"A",
+                      "ins06":"",
+                      "ins07":"",
+                      "ins08":"AC",
+                      "ins09":null,
+                      "ins10":null,
+                      "ins11":null,
+                      "ins12":null,
+                      "ins13":null,
+                      "ins17":null
+                    },
+                    "subscriberIdentifier":{
+                      "ref01":"0F",
+                      "ref02":"0008700676"
+                    },
+                    "groupPolicyId":{
+                      "ref01":"1L",
+                      "ref02":"86947398"
+                    },
+                    "memberSupplementalIdentifiers":[
+                      {
+                        "ref01":"6O",
+                        "ref02":"FL00084425944"
+                      },
+                      {
+                        "ref01":"17",
+                        "ref02":"0008700676"
+                      }
+                    ],
+                    "memberLevelDates":[
+                      {
+                        "dtp01":"356",
+                        "dtp02":"D8",
+                        "dtp03":"20200301"
+                      }
+                    ],
+                    "memberDemographics":{
+                      "memberName":{
+                        "nm101":"IL",
+                        "nm102":"1",
+                        "nm103":"Peterson",
+                        "nm104":"Peter",
+                        "nm105":"A",
+                        "nm106":"",
+                        "nm107":"",
+                        "nm108":"34",
+                        "nm109":"166492101",
+                        "nm110":null,
+                        "nm111":null,
+                        "nm112":null
+                      },
+                      "memberCommunication":{
+                        "per01":"IP",
+                        "per03":"TE",
+                        "per04":"7864223101",
+                        "per05":"EM",
+                        "per06":"ppeterpiperbogus@bogus.com",
+                        "per07":null,
+                        "per08":null
+                      },
+                      "memberAddressLine":{
+                        "n301":"14343 SW 258th Ln",
+                        "n302":"Apt 2307"
+                      },
+                      "memberCityStateZip":{
+                        "n401":"Homestead",
+                        "n402":"FL",
+                        "n403":"33032",
+                        "n404":"",
+                        "n405":"CY",
+                        "n406":"12086",
+                        "n407":null
+                      },
+                      "memberDemographics":{
+                        "dmg01":"D8",
+                        "dmg02":"19620827",
+                        "dmg03":"M",
+                        "dmg04":"M",
+                        "dmg05":[],
+                        "dmg06":null,
+                        "dmg10":null,
+                        "dmg11":null
+                      },
+                      "employmentClass":[],
+                      "memberIncome":null,
+                      "memberPolicyAmounts":[],
+                      "memberHealthInformation":{
+                        "hlh01":"N",
+                        "hlh02":null,
+                        "hlh03":null
+                      },
+                      "memberLanguages":[
+                        {
+                          "lui01":"LD",
+                          "lui02":"spa",
+                          "lui03":"",
+                          "lui04":"7"
+                        },
+                        {
+                          "lui01":"LD",
+                          "lui02":"spa",
+                          "lui03":"",
+                          "lui04":"6"
+                        }
+                      ]
+                    },
+                    "incorrectMemberDemographics":null,
+                    "memberMailingAddress":null,
+                    "employers":[
+                      {
+                        "memberEmployerName":{
+                          "nm101":"36",
+                          "nm102":"2",
+                          "nm103":"Computershare Inc.,",
+                          "nm104":null,
+                          "nm105":null,
+                          "nm106":null,
+                          "nm107":null,
+                          "nm108":"24",
+                          "nm109":"EP4535234",
+                          "nm110":null,
+                          "nm111":null,
+                          "nm112":null
+                        },
+                        "memberEmployerCommunications":{
+                          "per01":"EP",
+                          "per03":"TE",
+                          "per04":"8133579156",
+                          "per05":"EM",
+                          "per06":"computershare@bogus.com",
+                          "per07":null,
+                          "per08":null
+                        },
+                        "memberEmployerAddressLine":{
+                          "n301":"12634 Courtney Blvd",
+                          "n302":null
+                        },
+                        "memberEmployerCityStateZip":{
+                          "n401":"New York",
+                          "n402":"NY",
+                          "n403":"10012",
+                          "n404":"",
+                          "n405":"CY",
+                          "n406":"36061",
+                          "n407":null
+                        }
+                      },
+                      {
+                        "memberEmployerName":{
+                          "nm101":"36",
+                          "nm102":"2",
+                          "nm103":"LPL Financial",
+                          "nm104":null,
+                          "nm105":null,
+                          "nm106":null,
+                          "nm107":null,
+                          "nm108":"24",
+                          "nm109":"634061450",
+                          "nm110":null,
+                          "nm111":null,
+                          "nm112":null
+                        },
+                        "memberEmployerCommunications":{
+                          "per01":"EP",
+                          "per03":"TE",
+                          "per04":"8133579159",
+                          "per05":"EM",
+                          "per06":"lpl@bogus.com",
+                          "per07":null,
+                          "per08":null
+                        },
+                        "memberEmployerAddressLine":{
+                          "n301":"13620 N FM 620",
+                          "n302":"Building C, Suite 200"
+                        },
+                        "memberEmployerCityStateZip":{
+                          "n401":"Austin",
+                          "n402":"TX",
+                          "n403":"78717",
+                          "n404":"",
+                          "n405":"CY",
+                          "n406":"48015",
+                          "n407":null
+                        }
+                      }
+                    ],
+                    "schools":[
+                      {
+                        "memberSchoolName":{
+                          "nm101":"M8",
+                          "nm102":"2",
+                          "nm103":"University of South Florida",
+                          "nm104":null,
+                          "nm105":null,
+                          "nm106":null,
+                          "nm107":null,
+                          "nm108":null,
+                          "nm109":null,
+                          "nm110":null,
+                          "nm111":null,
+                          "nm112":null
+                        },
+                        "memberSchoolCommunications":{
+                          "per01":"SK",
+                          "per03":"TE",
+                          "per04":"8133579189",
+                          "per05":"EM",
+                          "per06":"usf@bogus.com",
+                          "per07":null,
+                          "per08":null
+                        },
+                        "memberSchoolAddressLine":{
+                          "n301":"4202 E Fowler Ave",
+                          "n302":null
+                        },
+                        "memberSchoolCityStateZip":{
+                          "n401":"Tampa",
+                          "n402":"FL",
+                          "n403":"33620",
+                          "n404":"",
+                          "n405":"CY",
+                          "n406":"36061",
+                          "n407":null
+                        }
+                      },
+                      {
+                        "memberSchoolName":{
+                          "nm101":"M8",
+                          "nm102":"2",
+                          "nm103":"University of Tampa",
+                          "nm104":null,
+                          "nm105":null,
+                          "nm106":null,
+                          "nm107":null,
+                          "nm108":null,
+                          "nm109":null,
+                          "nm110":null,
+                          "nm111":null,
+                          "nm112":null
+                        },
+                        "memberSchoolCommunications":{
+                          "per01":"SK",
+                          "per03":"TE",
+                          "per04":"8133579176",
+                          "per05":"EM",
+                          "per06":"ut@bogus.com",
+                          "per07":null,
+                          "per08":null
+                        },
+                        "memberSchoolAddressLine":{
+                          "n301":"401 W Kennedy Blvd",
+                          "n302":null
+                        },
+                        "memberSchoolCityStateZip":{
+                          "n401":"Tampa",
+                          "n402":"FL",
+                          "n403":"33606",
+                          "n404":"",
+                          "n405":"CY",
+                          "n406":"34632",
+                          "n407":null
+                        }
+                      }
+                    ],
+                    "custodialParent":{
+                      "custodialParentName":{
+                        "nm101":"S3",
+                        "nm102":"1",
+                        "nm103":"Doe",
+                        "nm104":"John",
+                        "nm105":"P",
+                        "nm106":"",
+                        "nm107":"",
+                        "nm108":"34",
+                        "nm109":"986340982",
+                        "nm110":null,
+                        "nm111":null,
+                        "nm112":null
+                      },
+                      "custodialParentCommunications":{
+                        "per01":"PQ",
+                        "per03":"TE",
+                        "per04":"8133579151",
+                        "per05":"EM",
+                        "per06":"johndoe@bogus.com",
+                        "per07":null,
+                        "per08":null
+                      },
+                      "custodialParentAddressLine":{
+                        "n301":"13377 Batten Lane",
+                        "n302":null
+                      },
+                      "custodialParentCityStateZip":{
+                        "n401":"Odessa",
+                        "n402":"FL",
+                        "n403":"33556",
+                        "n404":"",
+                        "n405":"CY",
+                        "n406":"12267",
+                        "n407":null
+                      }
+                    },
+                    "responsiblePersons":[
+                      {
+                        "responsiblePersonName":{
+                          "nm101":"QD",
+                          "nm102":"1",
+                          "nm103":"Miller",
+                          "nm104":"Mark",
+                          "nm105":"S",
+                          "nm106":"",
+                          "nm107":"",
+                          "nm108":"34",
+                          "nm109":"678340982",
+                          "nm110":null,
+                          "nm111":null,
+                          "nm112":null
+                        },
+                        "responsiblePersonCommunications":{
+                          "per01":"RP",
+                          "per03":"TE",
+                          "per04":"8133579153",
+                          "per05":"EM",
+                          "per06":"markmiller@bogus.com",
+                          "per07":null,
+                          "per08":null
+                        },
+                        "responsiblePersonAddressLine":{
+                          "n301":"14578 Rangeland Blvd",
+                          "n302":null
+                        },
+                        "responsiblePersonCityStateZip":{
+                          "n401":"Odessa",
+                          "n402":"FL",
+                          "n403":"33556",
+                          "n404":"",
+                          "n405":"CY",
+                          "n406":"12267",
+                          "n407":null
+                        }
+                      },
+                      {
+                        "responsiblePersonName":{
+                          "nm101":"GD",
+                          "nm102":"1",
+                          "nm103":"Butler",
+                          "nm104":"Josh",
+                          "nm105":"K",
+                          "nm106":"",
+                          "nm107":"",
+                          "nm108":"34",
+                          "nm109":"562305841",
+                          "nm110":null,
+                          "nm111":null,
+                          "nm112":null
+                        },
+                        "responsiblePersonCommunications":{
+                          "per01":"RP",
+                          "per03":"TE",
+                          "per04":"8133579154",
+                          "per05":"EM",
+                          "per06":"joshbutler@bogus.com",
+                          "per07":null,
+                          "per08":null
+                        },
+                        "responsiblePersonAddressLine":{
+                          "n301":"98342 Heartpine Ave",
+                          "n302":null
+                        },
+                        "responsiblePersonCityStateZip":{
+                          "n401":"Odessa",
+                          "n402":"FL",
+                          "n403":"33556",
+                          "n404":"",
+                          "n405":"CY",
+                          "n406":"12267",
+                          "n407":null
+                        }
+                      }
+                    ],
+                    "dropOffLocation":null,
+                    "disabilities":null,
+                    "healthCoverages":[
+                      {
+                        "healthCoverage":{
+                          "hd01":"021",
+                          "hd03":"HLT",
+                          "hd04":null,
+                          "hd05":null,
+                          "hd09":null
+                        },
+                        "healthCoverageDates":[
+                          {
+                            "dtp01":"348",
+                            "dtp02":"D8",
+                            "dtp03":"20200301"
+                          }
+                        ],
+                        "healthCoveragePolicyAmounts":[],
+                        "healthCoveragePolicyNumbers":[
+                          {
+                            "ref01":"CE",
+                            "ref02":"21663FL013000601"
+                          },
+                          {
+                            "ref01":"1L",
+                            "ref02":"86947398"
+                          }
+                        ]
+                      }
+                    ],
+                    "reportingCategories":{
+                      "additionalReportingCategory":{
+                        "ls01":"2700"
+                      },
+                      "reportingCategories":[
+                        {
+                          "reportingCategory":{
+                            "lx01":"7"
+                          },
+                          "reportingCategoryDetails":{
+                            "reportingCategory":{
+                              "n101":"75",
+                              "n102":"SOURCE EXCHANGE ID",
+                              "n103":null,
+                              "n104":null
+                            },
+                            "categoryReference":[
+                              {
+                                "ref01":"17",
+                                "ref02":"FL0"
+                              }
+                            ],
+                            "categoryDate":{
+                              "dtp01":"007",
+                              "dtp02":"D8",
+                              "dtp03":"20200301"
+                            }
+                          }
+                        },
+                        {
+                          "reportingCategory":{
+                            "lx01":"9"
+                          },
+                          "reportingCategoryDetails":{
+                            "reportingCategory":{
+                              "n101":"75",
+                              "n102":"ADDL MAINT REASON",
+                              "n103":null,
+                              "n104":null
+                            },
+                            "categoryReference":[
+                              {
+                                "ref01":"17",
+                                "ref02":"CIC"
+                              }
+                            ],
+                            "categoryDate":{
+                              "dtp01":"007",
+                              "dtp02":"D8",
+                              "dtp03":"20200301"
+                            }
+                          }
+                        },
+                        {
+                          "reportingCategory":{
+                            "lx01":"8"
+                          },
+                          "reportingCategoryDetails":{
+                            "reportingCategory":{
+                              "n101":"75",
+                              "n102":"SEP REASON",
+                              "n103":null,
+                              "n104":null
+                            },
+                            "categoryReference":[
+                              {
+                                "ref01":"17",
+                                "ref02":"43"
+                              }
+                            ],
+                            "categoryDate":{
+                              "dtp01":"007",
+                              "dtp02":"D8",
+                              "dtp03":"20200301"
+                            }
+                          }
+                        },
+                        {
+                          "reportingCategory":{
+                            "lx01":"1"
+                          },
+                          "reportingCategoryDetails":{
+                            "reportingCategory":{
+                              "n101":"75",
+                              "n102":"REQUEST SUBMIT TIMESTAMP",
+                              "n103":null,
+                              "n104":null
+                            },
+                            "categoryReference":[
+                              {
+                                "ref01":"17",
+                                "ref02":"20200127210516"
+                              }
+                            ],
+                            "categoryDate":null
+                          }
+                        },
+                        {
+                          "reportingCategory":{
+                            "lx01":"5"
+                          },
+                          "reportingCategoryDetails":{
+                            "reportingCategory":{
+                              "n101":"75",
+                              "n102":"TOT RES AMT",
+                              "n103":null,
+                              "n104":null
+                            },
+                            "categoryReference":[
+                              {
+                                "ref01":"9V",
+                                "ref02":"0.00"
+                              }
+                            ],
+                            "categoryDate":{
+                              "dtp01":"007",
+                              "dtp02":"D8",
+                              "dtp03":"20200301"
+                            }
+                          }
+                        },
+                        {
+                          "reportingCategory":{
+                            "lx01":"10"
+                          },
+                          "reportingCategoryDetails":{
+                            "reportingCategory":{
+                              "n101":"75",
+                              "n102":"APPLICATION ID AND ORIGIN",
+                              "n103":null,
+                              "n104":null
+                            },
+                            "categoryReference":[
+                              {
+                                "ref01":"6M",
+                                "ref02":"3340286919-1"
+                              }
+                            ],
+                            "categoryDate":{
+                              "dtp01":"007",
+                              "dtp02":"D8",
+                              "dtp03":"20200301"
+                            }
+                          }
+                        },
+                        {
+                          "reportingCategory":{
+                            "lx01":"3"
+                          },
+                          "reportingCategoryDetails":{
+                            "reportingCategory":{
+                              "n101":"75",
+                              "n102":"PRE AMT 1",
+                              "n103":null,
+                              "n104":null
+                            },
+                            "categoryReference":[
+                              {
+                                "ref01":"9X",
+                                "ref02":"640.44"
+                              }
+                            ],
+                            "categoryDate":{
+                              "dtp01":"007",
+                              "dtp02":"D8",
+                              "dtp03":"20200301"
+                            }
+                          }
+                        },
+                        {
+                          "reportingCategory":{
+                            "lx01":"2"
+                          },
+                          "reportingCategoryDetails":{
+                            "reportingCategory":{
+                              "n101":"75",
+                              "n102":"APTC AMT",
+                              "n103":null,
+                              "n104":null
+                            },
+                            "categoryReference":[
+                              {
+                                "ref01":"9V",
+                                "ref02":"1176.55"
+                              }
+                            ],
+                            "categoryDate":{
+                              "dtp01":"007",
+                              "dtp02":"D8",
+                              "dtp03":"20200301"
+                            }
+                          }
+                        },
+                        {
+                          "reportingCategory":{
+                            "lx01":"4"
+                          },
+                          "reportingCategoryDetails":{
+                            "reportingCategory":{
+                              "n101":"75",
+                              "n102":"PRE AMT TOT",
+                              "n103":null,
+                              "n104":null
+                            },
+                            "categoryReference":[
+                              {
+                                "ref01":"9X",
+                                "ref02":"1176.55"
+                              }
+                            ],
+                            "categoryDate":{
+                              "dtp01":"007",
+                              "dtp02":"D8",
+                              "dtp03":"20200301"
+                            }
+                          }
+                        },
+                        {
+                          "reportingCategory":{
+                            "lx01":"6"
+                          },
+                          "reportingCategoryDetails":{
+                            "reportingCategory":{
+                              "n101":"75",
+                              "n102":"RATING AREA",
+                              "n103":null,
+                              "n104":null
+                            },
+                            "categoryReference":[
+                              {
+                                "ref01":"9X",
+                                "ref02":"R-FL043"
+                              }
+                            ],
+                            "categoryDate":{
+                              "dtp01":"007",
+                              "dtp02":"D8",
+                              "dtp03":"20200301"
+                            }
+                          }
+                        }
+                      ],
+                      "loopTermination":{
+                        "le01":"2700"
+                      }
+                    }
+                  },
+                  {
+                    "memberDetail":{
+                      "ins01":"N",
+                      "ins02":"01",
+                      "ins03":"021",
+                      "ins04":"EC",
+                      "ins05":"A",
+                      "ins06":null,
+                      "ins07":null,
+                      "ins08":null,
+                      "ins09":null,
+                      "ins10":null,
+                      "ins11":null,
+                      "ins12":null,
+                      "ins13":null,
+                      "ins17":null
+                    },
+                    "subscriberIdentifier":{
+                      "ref01":"0F",
+                      "ref02":"0008700676"
+                    },
+                    "groupPolicyId":null,
+                    "memberSupplementalIdentifiers":[
+                      {
+                        "ref01":"17",
+                        "ref02":"0009185554"
+                      }
+                    ],
+                    "memberLevelDates":[
+                      {
+                        "dtp01":"356",
+                        "dtp02":"D8",
+                        "dtp03":"20200301"
+                      }
+                    ],
+                    "memberDemographics":{
+                      "memberName":{
+                        "nm101":"IL",
+                        "nm102":"1",
+                        "nm103":"Peterson",
+                        "nm104":"Rachel",
+                        "nm105":"",
+                        "nm106":"",
+                        "nm107":"",
+                        "nm108":"34",
+                        "nm109":"422850102",
+                        "nm110":null,
+                        "nm111":null,
+                        "nm112":null
+                      },
+                      "memberCommunication":null,
+                      "memberAddressLine":{
+                        "n301":"14343 SW 258th Ln",
+                        "n302":"Apt 2307"
+                      },
+                      "memberCityStateZip":{
+                        "n401":"Homestead",
+                        "n402":"FL",
+                        "n403":"33032",
+                        "n404":"",
+                        "n405":"CY",
+                        "n406":"12086",
+                        "n407":null
+                      },
+                      "memberDemographics":{
+                        "dmg01":"D8",
+                        "dmg02":"19661121",
+                        "dmg03":"F",
+                        "dmg04":null,
+                        "dmg05":[],
+                        "dmg06":null,
+                        "dmg10":null,
+                        "dmg11":null
+                      },
+                      "employmentClass":[],
+                      "memberIncome":null,
+                      "memberPolicyAmounts":[],
+                      "memberHealthInformation":{
+                        "hlh01":"N",
+                        "hlh02":null,
+                        "hlh03":null
+                      },
+                      "memberLanguages":[]
+                    },
+                    "incorrectMemberDemographics":null,
+                    "memberMailingAddress":null,
+                    "employers":null,
+                    "schools":null,
+                    "custodialParent":null,
+                    "responsiblePersons":null,
+                    "dropOffLocation":null,
+                    "disabilities":null,
+                    "healthCoverages":[
+                      {
+                        "healthCoverage":{
+                          "hd01":"021",
+                          "hd03":"HLT",
+                          "hd04":null,
+                          "hd05":null,
+                          "hd09":null
+                        },
+                        "healthCoverageDates":[
+                          {
+                            "dtp01":"348",
+                            "dtp02":"D8",
+                            "dtp03":"20200301"
+                          }
+                        ],
+                        "healthCoveragePolicyAmounts":[],
+                        "healthCoveragePolicyNumbers":[
+                          {
+                            "ref01":"CE",
+                            "ref02":"21663FL013000601"
+                          },
+                          {
+                            "ref01":"1L",
+                            "ref02":"86947398"
+                          }
+                        ]
+                      }
+                    ],
+                    "reportingCategories":{
+                      "additionalReportingCategory":{
+                        "ls01":"2700"
+                      },
+                      "reportingCategories":[
+                        {
+                          "reportingCategory":{
+                            "lx01":"6"
+                          },
+                          "reportingCategoryDetails":{
+                            "reportingCategory":{
+                              "n101":"75",
+                              "n102":"APPLICATION ID AND ORIGIN",
+                              "n103":null,
+                              "n104":null
+                            },
+                            "categoryReference":[
+                              {
+                                "ref01":"6M",
+                                "ref02":"3340286919-1"
+                              }
+                            ],
+                            "categoryDate":{
+                              "dtp01":"007",
+                              "dtp02":"D8",
+                              "dtp03":"20200301"
+                            }
+                          }
+                        },
+                        {
+                          "reportingCategory":{
+                            "lx01":"2"
+                          },
+                          "reportingCategoryDetails":{
+                            "reportingCategory":{
+                              "n101":"75",
+                              "n102":"PRE AMT 1",
+                              "n103":null,
+                              "n104":null
+                            },
+                            "categoryReference":[
+                              {
+                                "ref01":"9X",
+                                "ref02":"536.11"
+                              }
+                            ],
+                            "categoryDate":{
+                              "dtp01":"007",
+                              "dtp02":"D8",
+                              "dtp03":"20200301"
+                            }
+                          }
+                        },
+                        {
+                          "reportingCategory":{
+                            "lx01":"3"
+                          },
+                          "reportingCategoryDetails":{
+                            "reportingCategory":{
+                              "n101":"75",
+                              "n102":"SOURCE EXCHANGE ID",
+                              "n103":null,
+                              "n104":null
+                            },
+                            "categoryReference":[
+                              {
+                                "ref01":"17",
+                                "ref02":"FL0"
+                              }
+                            ],
+                            "categoryDate":{
+                              "dtp01":"007",
+                              "dtp02":"D8",
+                              "dtp03":"20200301"
+                            }
+                          }
+                        },
+                        {
+                          "reportingCategory":{
+                            "lx01":"5"
+                          },
+                          "reportingCategoryDetails":{
+                            "reportingCategory":{
+                              "n101":"75",
+                              "n102":"ADDL MAINT REASON",
+                              "n103":null,
+                              "n104":null
+                            },
+                            "categoryReference":[
+                              {
+                                "ref01":"17",
+                                "ref02":"CIC"
+                              }
+                            ],
+                            "categoryDate":{
+                              "dtp01":"007",
+                              "dtp02":"D8",
+                              "dtp03":"20200301"
+                            }
+                          }
+                        },
+                        {
+                          "reportingCategory":{
+                            "lx01":"1"
+                          },
+                          "reportingCategoryDetails":{
+                            "reportingCategory":{
+                              "n101":"75",
+                              "n102":"REQUEST SUBMIT TIMESTAMP",
+                              "n103":null,
+                              "n104":null
+                            },
+                            "categoryReference":[
+                              {
+                                "ref01":"17",
+                                "ref02":"20200127210516"
+                              }
+                            ],
+                            "categoryDate":null
+                          }
+                        },
+                        {
+                          "reportingCategory":{
+                            "lx01":"4"
+                          },
+                          "reportingCategoryDetails":{
+                            "reportingCategory":{
+                              "n101":"75",
+                              "n102":"SEP REASON",
+                              "n103":null,
+                              "n104":null
+                            },
+                            "categoryReference":[
+                              {
+                                "ref01":"17",
+                                "ref02":"43"
+                              }
+                            ],
+                            "categoryDate":{
+                              "dtp01":"007",
+                              "dtp02":"D8",
+                              "dtp03":"20200301"
+                            }
+                          }
+                        }
+                      ],
+                      "loopTermination":{
+                        "le01":"2700"
+                      }
+                    }
+                  }
+                ]
+              }
+            },
+            "dataTransformationDto": {
+              "transactionDto": {
+                "ztcn": "SOXTVOXMQM72AOP",
+                "zfcn": "QCHDQJ7HJZULPOY",
+                "transactionReceivedDate": "2023-03-16T16:22:20.506Z",
+                "transactionSourceTypeCode": "MARKETPLACE",
+                "transactionDetail": {
+                  "transactionTypeCode": "ADD",
+                  "planId": "21663FL0130006",
+                  "csrVariant": "01",
+                  "groupPolicyId": "86947398",
+                  "effectiveDate": "2020-03-01"
+                },
+                "transactionAttributes": [
+                  {
+                    "transactionAttributeTypeCode": "RATINGAREA",
+                    "transactionAttributeValue": "R-FL043"
+                  },
+                  {
+                    "transactionAttributeTypeCode": "APPID",
+                    "transactionAttributeValue": "3340286919-1"
+                  },
+                  {
+                    "transactionAttributeTypeCode": "SRCEXCHID",
+                    "transactionAttributeValue": "FL0"
+                  },
+                  {
+                    "transactionAttributeTypeCode": "AMRC",
+                    "transactionAttributeValue": "CIC"
+                  },
+                  {
+                    "transactionAttributeTypeCode": "SEPREASON",
+                    "transactionAttributeValue": "43"
+                  },
+                  {
+                    "transactionAttributeTypeCode": "REQSBTTMS",
+                    "transactionAttributeValue": "20200127210516"
+                  }
+                ],
+                "transactionRates": [
+                  {
+                    "rateTypeCode": "TOTRESAMT",
+                    "transactionRate": 0.0,
+                    "csrVariant": "01",
+                    "rateStartDate": "2020-03-01"
+                  },
+                  {
+                    "rateTypeCode": "PREAMTTOT",
+                    "transactionRate": 1176.55,
+                    "csrVariant": "01",
+                    "rateStartDate": "2020-03-01"
+                  },
+                  {
+                    "rateTypeCode": "APTCAMT",
+                    "transactionRate": 1176.55,
+                    "csrVariant": "01",
+                    "rateStartDate": "2020-03-01"
+                  }
+                ],
+                "tradingPartnerDto": {
+                  "tradingPartnerId": "21663",
+                  "lineOfBusinessTypeCode": "HIX",
+                  "businessTypeCode": "MP_FL",
+                  "marketplaceTypeCode": "FFM",
+                  "stateTypeCode": "FL"
+                },
+                "sponsor": {
+                  "sponsorName": "Peter A Peterson",
+                  "sponsorId": "166492101",
+                  "receivedDate": "2023-03-16T16:22:21.198Z"
+                },
+                "broker": {
+                  "brokerName": "Horacio  Sequeira",
+                  "brokerId": "17845067",
+                  "accountNumber1": "acct1",
+                  "receivedDate": "2023-03-16T16:22:21.199Z"
+                },
+                "payer": {
+                  "payerName": "Ambetter from Sunshine Health",
+                  "payerId": "060641618",
+                  "receivedDate": "2023-03-16T16:22:21.198Z"
+                },
+                "members": [
+                  {
+                    "transactionTypeCode": "ADD",
+                    "effectiveDate": "2020-03-01",
+                    "relationshipTypeCode": "SPOUSE",
+                    "reasonTypeCode": "MBS",
+                    "firstName": "Rachel",
+                    "middleName": "",
+                    "lastName": "Peterson",
+                    "tobaccoIndicator": "NONE",
+                    "dateOfBirth": "1966-11-21",
+                    "genderTypeCode": "FEMALE",
+                    "memberRate": 536.11,
+                    "memberAddresses": [
+                      {
+                        "addressTypeCode": "RESIDENCE",
+                        "addressLine1": "14343 SW 258th Ln",
+                        "addressLine2": "Apt 2307",
+                        "city": "Homestead",
+                        "stateTypeCode": "FL",
+                        "zipCode": "33032",
+                        "countyCode": "12086",
+                        "receivedDate": "2023-03-16T16:22:21.262Z"
+                      }
+                    ],
+                    "identifiers": [
+                      {
+                        "identifierTypeCode": "EXCHSUBID",
+                        "identifierValue": "0008700676",
+                        "receivedDate": "2023-03-16T16:22:21.248Z"
+                      },
+                      {
+                        "identifierTypeCode": "EXCHMEMID",
+                        "identifierValue": "0009185554",
+                        "receivedDate": "2023-03-16T16:22:21.255Z"
+                      },
+                      {
+                        "identifierTypeCode": "SSN",
+                        "identifierValue": "422850102",
+                        "receivedDate": "2023-03-16T16:22:21.261Z"
+                      }
+                    ]
+                  },
+                  {
+                    "transactionTypeCode": "ADD",
+                    "effectiveDate": "2020-03-01",
+                    "relationshipTypeCode": "HOH",
+                    "reasonTypeCode": "MBS",
+                    "firstName": "Peter",
+                    "middleName": "A",
+                    "lastName": "Peterson",
+                    "tobaccoIndicator": "NONE",
+                    "dateOfBirth": "1962-08-27",
+                    "genderTypeCode": "MALE",
+                    "memberRate": 640.44,
+                    "memberPhones": [
+                      {
+                        "phoneTypeCode": "HOME",
+                        "phoneNumber": "7864223101",
+                        "receivedDate": "2023-03-16T16:22:21.323Z"
+                      }
+                    ],
+                    "memberAddresses": [
+                      {
+                        "addressTypeCode": "RESIDENCE",
+                        "addressLine1": "14343 SW 258th Ln",
+                        "addressLine2": "Apt 2307",
+                        "city": "Homestead",
+                        "stateTypeCode": "FL",
+                        "zipCode": "33032",
+                        "countyCode": "12086",
+                        "receivedDate": "2023-03-16T16:22:21.318Z"
+                      }
+                    ],
+                    "identifiers": [
+                      {
+                        "identifierTypeCode": "EXCHSUBID",
+                        "identifierValue": "0008700676",
+                        "receivedDate": "2023-03-16T16:22:21.303Z"
+                      },
+                      {
+                        "identifierTypeCode": "EXCHMEMID",
+                        "identifierValue": "0008700676",
+                        "receivedDate": "2023-03-16T16:22:21.311Z"
+                      },
+                      {
+                        "identifierTypeCode": "SSN",
+                        "identifierValue": "166492101",
+                        "receivedDate": "2023-03-16T16:22:21.318Z"
+                      }
+                    ],
+                    "emails": [
+                      {
+                        "email": "ppeterpiperbogus@bogus.com",
+                        "receivedDate": "2023-03-16T16:22:21.323Z"
+                      }
+                    ],
+                    "languages": [
+                      {
+                        "languageTypeCode": "SPEAKING",
+                        "languageCode": "spa",
+                        "receivedDate": "2023-03-16T16:22:21.330Z"
+                      },
+                      {
+                        "languageTypeCode": "WRITING",
+                        "languageCode": "spa",
+                        "receivedDate": "2023-03-16T16:22:21.335Z"
+                      }
+                    ],
+                    "alternateContacts": [
+                      {
+                        "alternateContactTypeCode": "CUSTPAR",
+                        "firstName": "John",
+                        "middleName": "P",
+                        "lastName": "Doe",
+                        "identifierTypeCode": "SSN",
+                        "identifierValue": "986340982",
+                        "phoneTypeCode": "HOME",
+                        "phoneNumber": "8133579151",
+                        "email": "johndoe@bogus.com",
+                        "addressLine1": "13377 Batten Lane",
+                        "city": "Odessa",
+                        "stateTypeCode": "FL",
+                        "zipCode": "33556",
+                        "receivedDate": "2023-03-16T16:22:21.352Z"
+                      },
+                      {
+                        "alternateContactTypeCode": "GUARDN",
+                        "firstName": "Josh",
+                        "middleName": "K",
+                        "lastName": "Butler",
+                        "identifierTypeCode": "SSN",
+                        "identifierValue": "562305841",
+                        "phoneTypeCode": "HOME",
+                        "phoneNumber": "8133579154",
+                        "email": "joshbutler@bogus.com",
+                        "addressLine1": "98342 Heartpine Ave",
+                        "city": "Odessa",
+                        "stateTypeCode": "FL",
+                        "zipCode": "33556",
+                        "receivedDate": "2023-03-16T16:22:21.369Z"
+                      },
+                      {
+                        "alternateContactTypeCode": "RESPAR",
+                        "firstName": "Mark",
+                        "middleName": "S",
+                        "lastName": "Miller",
+                        "identifierTypeCode": "SSN",
+                        "identifierValue": "678340982",
+                        "phoneTypeCode": "HOME",
+                        "phoneNumber": "8133579153",
+                        "email": "markmiller@bogus.com",
+                        "addressLine1": "14578 Rangeland Blvd",
+                        "city": "Odessa",
+                        "stateTypeCode": "FL",
+                        "zipCode": "33556",
+                        "receivedDate": "2023-03-16T16:22:21.386Z"
+                      },
+                      {
+                        "alternateContactTypeCode": "MEMEMP",
+                        "lastName": "LPL Financial",
+                        "identifierTypeCode": "EIN",
+                        "identifierValue": "634061450",
+                        "phoneTypeCode": "HOME",
+                        "phoneNumber": "8133579159",
+                        "email": "lpl@bogus.com",
+                        "addressLine1": "13620 N FM 620",
+                        "addressLine2": "Building C, Suite 200",
+                        "city": "Austin",
+                        "stateTypeCode": "TX",
+                        "zipCode": "78717",
+                        "receivedDate": "2023-03-16T16:22:21.402Z"
+                      },
+                      {
+                        "alternateContactTypeCode": "MEMEMP",
+                        "lastName": "Computershare Inc.,",
+                        "identifierTypeCode": "EIN",
+                        "identifierValue": "EP4535234",
+                        "phoneTypeCode": "HOME",
+                        "phoneNumber": "8133579156",
+                        "email": "computershare@bogus.com",
+                        "addressLine1": "12634 Courtney Blvd",
+                        "city": "New York",
+                        "stateTypeCode": "NY",
+                        "zipCode": "10012",
+                        "receivedDate": "2023-03-16T16:22:21.417Z"
+                      },
+                      {
+                        "alternateContactTypeCode": "MEMSCH",
+                        "lastName": "University of South Florida",
+                        "phoneTypeCode": "HOME",
+                        "phoneNumber": "8133579189",
+                        "email": "usf@bogus.com",
+                        "addressLine1": "4202 E Fowler Ave",
+                        "city": "Tampa",
+                        "stateTypeCode": "FL",
+                        "zipCode": "33620",
+                        "receivedDate": "2023-03-16T16:22:21.427Z"
+                      },
+                      {
+                        "alternateContactTypeCode": "MEMSCH",
+                        "lastName": "University of Tampa",
+                        "phoneTypeCode": "HOME",
+                        "phoneNumber": "8133579176",
+                        "email": "ut@bogus.com",
+                        "addressLine1": "401 W Kennedy Blvd",
+                        "city": "Tampa",
+                        "stateTypeCode": "FL",
+                        "zipCode": "33606",
+                        "receivedDate": "2023-03-16T16:22:21.437Z"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "transformationMessages": []
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

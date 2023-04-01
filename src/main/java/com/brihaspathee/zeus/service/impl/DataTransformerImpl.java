@@ -64,11 +64,13 @@ public class DataTransformerImpl implements DataTransformer {
     /**
      * Service to transform the raw transaction to transaction dto
      * @param rawTransactionDto
+     * @param sendToTransactionManager
      * @return
      * @throws JsonProcessingException
      */
     @Override
-    public DataTransformationDto transformTransaction(RawTransactionDto rawTransactionDto) throws JsonProcessingException {
+    public DataTransformationDto transformTransaction(RawTransactionDto rawTransactionDto,
+                                                      boolean sendToTransactionManager) throws JsonProcessingException {
         // Construct the data transformation dto objet
         // This also populates the trading partner details of the transaction
         DataTransformationDto dataTransformationDto = constructDataTransformationObject(rawTransactionDto);
@@ -89,7 +91,9 @@ public class DataTransformerImpl implements DataTransformer {
         objectMapper.findAndRegisterModules();
         String data = objectMapper.writeValueAsString(dataTransformationDto);
         log.info("Data Transformation DTO as string:{}", data);
-        transactionProducer.publishTransaction(dataTransformationDto);
+        if(sendToTransactionManager){
+            transactionProducer.publishTransaction(dataTransformationDto);
+        }
         return dataTransformationDto;
     }
 

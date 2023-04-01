@@ -55,12 +55,16 @@ public class TransactionResource implements TransactionAPI {
     /**
      * Process the raw transaction
      * @param rawTransactionDto
+     * @param sendToTransactionManager
      * @return
+     * @throws JsonProcessingException
      */
     @Override
     public ResponseEntity<ZeusApiResponse<DataTransformationDto>> processRawTransaction(
-            RawTransactionDto rawTransactionDto) throws JsonProcessingException {
-        DataTransformationDto dataTransformationDto = dataTransformer.transformTransaction(rawTransactionDto);
+            RawTransactionDto rawTransactionDto,
+            boolean sendToTransactionManager) throws JsonProcessingException {
+        log.info("Send to Transaction Manager:{}", sendToTransactionManager);
+        DataTransformationDto dataTransformationDto = dataTransformer.transformTransaction(rawTransactionDto, sendToTransactionManager);
         ZeusApiResponse<DataTransformationDto> apiResponse = ZeusApiResponse.<DataTransformationDto>builder()
                 .reason(ApiResponseConstants.SUCCESS_REASON)
                 .developerMessage(ApiResponseConstants.SUCCESS)
