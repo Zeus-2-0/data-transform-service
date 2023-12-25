@@ -62,6 +62,7 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
         getTransactionType(dataTransformationDto, primarySubscriber);
         // Get and Set the coverage type (Family or Dependent)
         getCoverageType(dataTransformationDto, primarySubscriber);
+        log.info("Data Transformation DTO after setting coverage type:{}", dataTransformationDto);
         // Get and Set the Plan id and CSR Variant from the transaction
         getPlanId(dataTransformationDto, primarySubscriber);
         // Get and Set the group policy id
@@ -125,7 +126,7 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
         Optional<Loop2300> optionalHC = primaryMember.getHealthCoverages()
                 .stream()
                 .findFirst();
-        String coverageTypeCode = "FAM";
+        String coverageTypeCode = null;
         if(optionalHC.isPresent()){
             Loop2300 healthCoverage = optionalHC.get();
             if(healthCoverage.getHealthCoverage() != null){
@@ -134,7 +135,8 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
         }
         dataTransformationDto.getTransactionDto()
                 .getTransactionDetail()
-                .setCoverageTypeCode(coverageTypeCode);
+                .setCoverageTypeCode(Objects.requireNonNullElse(coverageTypeCode, "FAM"));
+        
     }
 
     /**
