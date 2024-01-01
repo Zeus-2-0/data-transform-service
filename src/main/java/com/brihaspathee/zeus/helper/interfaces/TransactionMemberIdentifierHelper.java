@@ -3,6 +3,8 @@ package com.brihaspathee.zeus.helper.interfaces;
 import com.brihaspathee.zeus.dto.transaction.TransactionMemberDto;
 import com.brihaspathee.zeus.edi.models.enrollment.Loop2000;
 
+import java.time.LocalDateTime;
+
 /**
  * Created in Intellij IDEA
  * User: Balaji Varadharajan
@@ -18,6 +20,7 @@ public interface TransactionMemberIdentifierHelper {
      * Populate the identifiers that are received for the member
      * @param transactionMemberDto
      * @param member
+     * @param transactionReceivedDate
      */
-    void buildMemberIdentifier(TransactionMemberDto transactionMemberDto, Loop2000 member);
+    void buildMemberIdentifier(TransactionMemberDto transactionMemberDto, Loop2000 member, LocalDateTime transactionReceivedDate);
 }

@@ -3,6 +3,8 @@ package com.brihaspathee.zeus.helper.interfaces;
 import com.brihaspathee.zeus.dto.account.RawTransactionDto;
 import com.brihaspathee.zeus.web.model.DataTransformationDto;
 
+import java.time.LocalDateTime;
+
 /**
  * Created in Intellij IDEA
  * User: Balaji Varadharajan
@@ -18,6 +20,9 @@ public interface TransactionBrokerHelper {
      * Build the broker details
      * @param dataTransformationDto
      * @param rawTransactionDto
+     * @param transactionReceivedDate
      */
-    void buildTransactionBroker(DataTransformationDto dataTransformationDto, RawTransactionDto rawTransactionDto);
+    void buildTransactionBroker(DataTransformationDto dataTransformationDto,
+                                RawTransactionDto rawTransactionDto,
+                                LocalDateTime transactionReceivedDate);
 }

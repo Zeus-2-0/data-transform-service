@@ -38,9 +38,10 @@ public class TransactionMemberLanguageHelperImpl implements TransactionMemberLan
      * Build member language
      * @param memberDto
      * @param memberLanguages
+     * @param transactionReceivedDate
      */
     @Override
-    public void buildMemberLanguage(TransactionMemberDto memberDto, Set<LUI> memberLanguages) {
+    public void buildMemberLanguage(TransactionMemberDto memberDto, Set<LUI> memberLanguages, LocalDateTime transactionReceivedDate) {
         List<TransactionMemberLanguageDto> memberLanguageDtos = new ArrayList<>();
         if(memberLanguages != null && memberLanguages.size() >0 ){
             memberLanguages.stream().forEach(language -> {
@@ -52,7 +53,7 @@ public class TransactionMemberLanguageHelperImpl implements TransactionMemberLan
                 TransactionMemberLanguageDto memberLanguageDto = TransactionMemberLanguageDto.builder()
                         .languageTypeCode(languageResponse.getInternalListCode())
                         .languageCode(language.getLui02())
-                        .receivedDate(LocalDateTime.now())
+                        .receivedDate(transactionReceivedDate)
                         .build();
                 memberLanguageDtos.add(memberLanguageDto);
 

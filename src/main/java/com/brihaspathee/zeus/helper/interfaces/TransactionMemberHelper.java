@@ -2,7 +2,11 @@ package com.brihaspathee.zeus.helper.interfaces;
 
 import com.brihaspathee.zeus.dto.account.RawTransactionDto;
 import com.brihaspathee.zeus.edi.models.enrollment.Loop2000;
+import com.brihaspathee.zeus.test.TestMemberEntityCodes;
 import com.brihaspathee.zeus.web.model.DataTransformationDto;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * Created in Intellij IDEA
@@ -18,8 +22,12 @@ public interface TransactionMemberHelper {
     /**
      * Build member details from the transaction
      * @param dataTransformationDto
+     * @param testMemberEntityCodes
      * @param member
+     * @param transactionReceivedDate
      */
     void buildMemberDetail(DataTransformationDto dataTransformationDto,
-                           Loop2000 member);
+                           List<TestMemberEntityCodes> testMemberEntityCodes,
+                           Loop2000 member,
+                           LocalDateTime transactionReceivedDate);
 }

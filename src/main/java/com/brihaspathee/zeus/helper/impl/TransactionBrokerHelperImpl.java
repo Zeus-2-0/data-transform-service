@@ -30,10 +30,12 @@ public class TransactionBrokerHelperImpl implements TransactionBrokerHelper {
      * Building the transaction broker
      * @param dataTransformationDto
      * @param rawTransactionDto
+     * @param transactionReceivedDate
      */
     @Override
     public void buildTransactionBroker(DataTransformationDto dataTransformationDto,
-                                       RawTransactionDto rawTransactionDto) {
+                                       RawTransactionDto rawTransactionDto,
+                                       LocalDateTime transactionReceivedDate) {
 
         Set<Loop1000C> brokers = rawTransactionDto.getTransaction().getBrokers();
         // check if there are any brokers present in the transaction
@@ -58,7 +60,7 @@ public class TransactionBrokerHelperImpl implements TransactionBrokerHelper {
                     brokerDto.setAgencyId(broker.getBroker().getN104());
                 }
             });
-            brokerDto.setReceivedDate(LocalDateTime.now());
+            brokerDto.setReceivedDate(transactionReceivedDate);
             dataTransformationDto.getTransactionDto().setBroker(brokerDto);
         }
 
