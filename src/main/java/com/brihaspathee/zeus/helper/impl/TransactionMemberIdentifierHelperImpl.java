@@ -37,9 +37,10 @@ public class TransactionMemberIdentifierHelperImpl implements TransactionMemberI
      * Populates the member identifiers
      * @param transactionMemberDto
      * @param member
+     * @param transactionReceivedDate
      */
     @Override
-    public void buildMemberIdentifier(TransactionMemberDto transactionMemberDto, Loop2000 member) {
+    public void buildMemberIdentifier(TransactionMemberDto transactionMemberDto, Loop2000 member, LocalDateTime transactionReceivedDate) {
         String exchangeSubId = member.getSubscriberIdentifier().getRef02();
         if (exchangeSubId !=null){
             XWalkResponse identifierResponse = referenceDataServiceHelper.getInternalRefData(
@@ -73,7 +74,7 @@ public class TransactionMemberIdentifierHelperImpl implements TransactionMemberI
             TransactionMemberIdentifierDto identifierDto = TransactionMemberIdentifierDto.builder()
                     .identifierTypeCode(xWalkResponse.getInternalListCode())
                     .identifierValue(memberIdentifier)
-                    .receivedDate(LocalDateTime.now())
+                    .receivedDate(transactionReceivedDate)
                     .build();
             transactionMemberDto.getIdentifiers().add(identifierDto);
         }

@@ -37,9 +37,10 @@ public class TransactionMemberPhoneHelperImpl implements TransactionMemberPhoneH
      * Build member phone details
      * @param memberDto
      * @param communications
+     * @param transactionReceivedDate
      */
     @Override
-    public void buildMemberPhone(TransactionMemberDto memberDto, PER communications) {
+    public void buildMemberPhone(TransactionMemberDto memberDto, PER communications, LocalDateTime transactionReceivedDate) {
         if(communications == null){
             return;
         }
@@ -47,17 +48,17 @@ public class TransactionMemberPhoneHelperImpl implements TransactionMemberPhoneH
         if(communications.getPer04() != null && !communications.getPer03().equals("EM")){
             populatePhoneNumber(communications.getPer03(),
                     communications.getPer04(),
-                    memberPhoneDtos);
+                    memberPhoneDtos, transactionReceivedDate);
         }
         if(communications.getPer06() != null && !communications.getPer05().equals("EM")){
             populatePhoneNumber(communications.getPer05(),
                     communications.getPer06(),
-                    memberPhoneDtos);
+                    memberPhoneDtos, transactionReceivedDate);
         }
         if(communications.getPer08() != null && !communications.getPer07().equals("EM")){
             populatePhoneNumber(communications.getPer07(),
                     communications.getPer08(),
-                    memberPhoneDtos);
+                    memberPhoneDtos, transactionReceivedDate);
         }
         if(memberPhoneDtos.size() > 0){
             memberDto.setMemberPhones(memberPhoneDtos);
@@ -69,8 +70,9 @@ public class TransactionMemberPhoneHelperImpl implements TransactionMemberPhoneH
      * @param phoneType
      * @param phoneNumber
      * @param memberPhoneDtos
+     * @param transactionReceivedDate
      */
-    private void populatePhoneNumber(String phoneType, String phoneNumber, List<TransactionMemberPhoneDto> memberPhoneDtos) {
+    private void populatePhoneNumber(String phoneType, String phoneNumber, List<TransactionMemberPhoneDto> memberPhoneDtos, LocalDateTime transactionReceivedDate) {
         XWalkResponse xWalkResponse = referenceDataServiceHelper.getInternalRefData(
                 phoneType,
                 "Phone",
@@ -78,7 +80,7 @@ public class TransactionMemberPhoneHelperImpl implements TransactionMemberPhoneH
         TransactionMemberPhoneDto memberPhoneDto = TransactionMemberPhoneDto.builder()
                 .phoneTypeCode(xWalkResponse.getInternalListCode())
                 .phoneNumber(phoneNumber)
-                .receivedDate(LocalDateTime.now())
+                .receivedDate(transactionReceivedDate)
                 .build();
         memberPhoneDtos.add(memberPhoneDto);
     }

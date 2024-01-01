@@ -37,15 +37,17 @@ public class TransactionSponsorHelperImpl implements TransactionSponsorHelper {
      * Build the sponsor detail
      * @param dataTransformationDto
      * @param rawTransactionDto
+     * @param transactionReceivedDate
      */
     @Override
     public void buildSponsor(DataTransformationDto dataTransformationDto,
-                             RawTransactionDto rawTransactionDto) {
+                             RawTransactionDto rawTransactionDto,
+                             LocalDateTime transactionReceivedDate) {
         Loop1000A sponsor = rawTransactionDto.getTransaction().getSponsor();
         TransactionSponsorDto sponsorDto = TransactionSponsorDto.builder()
                 .sponsorName(sponsor.getSponsor().getN102())
                 .sponsorId(sponsor.getSponsor().getN104())
-                .receivedDate(LocalDateTime.now())
+                .receivedDate(transactionReceivedDate)
                 .build();
         dataTransformationDto.getTransactionDto().setSponsor(sponsorDto);
     }

@@ -3,6 +3,8 @@ package com.brihaspathee.zeus.helper.interfaces;
 import com.brihaspathee.zeus.dto.transaction.TransactionMemberDto;
 import com.brihaspathee.zeus.edi.models.common.PER;
 
+import java.time.LocalDateTime;
+
 /**
  * Created in Intellij IDEA
  * User: Balaji Varadharajan
@@ -18,6 +20,9 @@ public interface TransactionMemberPhoneHelper {
      * Build the member phone details
      * @param memberDto
      * @param communications
+     * @param transactionReceivedDate
      */
-    void buildMemberPhone(TransactionMemberDto memberDto, PER communications);
+    void buildMemberPhone(TransactionMemberDto memberDto,
+                          PER communications,
+                          LocalDateTime transactionReceivedDate);
 }

@@ -31,14 +31,17 @@ public class TransactionPayerHelperImpl implements TransactionPayerHelper {
      * Builds the transaction payer detail
      * @param dataTransformationDto
      * @param rawTransactionDto
+     * @param transactionReceivedDate
      */
     @Override
-    public void buildTransactionPayer(DataTransformationDto dataTransformationDto, RawTransactionDto rawTransactionDto) {
+    public void buildTransactionPayer(DataTransformationDto dataTransformationDto,
+                                      RawTransactionDto rawTransactionDto,
+                                      LocalDateTime transactionReceivedDate) {
         Loop1000B payer = rawTransactionDto.getTransaction().getPayer();
         TransactionPayerDto payerDto = TransactionPayerDto.builder()
                 .payerName(payer.getPayer().getN102())
                 .payerId(payer.getPayer().getN104())
-                .receivedDate(LocalDateTime.now())
+                .receivedDate(transactionReceivedDate)
                 .build();
         dataTransformationDto.getTransactionDto().setPayer(payerDto);
     }

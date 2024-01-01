@@ -10,6 +10,8 @@ import com.brihaspathee.zeus.edi.models.enrollment.Loop2710;
 import com.brihaspathee.zeus.helper.interfaces.*;
 import com.brihaspathee.zeus.reference.data.model.XWalkRequest;
 import com.brihaspathee.zeus.reference.data.model.XWalkResponse;
+import com.brihaspathee.zeus.test.TestMemberEntityCodes;
+import com.brihaspathee.zeus.util.DataTransformerUtil;
 import com.brihaspathee.zeus.web.model.DataTransformationDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +19,9 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created in Intellij IDEA
@@ -71,15 +73,31 @@ public class TransactionMemberHelperImpl implements TransactionMemberHelper {
     private final TransactionMemberAlternateContactHelper memberAlternateContactHelper;
 
     /**
+     * Utility class to populate the entity codes on a test environment
+     */
+    private final DataTransformerUtil dataTransformerUtil;
+
+    /**
      * Build Member detail
      * @param dataTransformationDto
+     * @param testMemberEntityCodes
      * @param member
+     * @param transactionReceivedDate
      */
     @Override
-    public void buildMemberDetail(DataTransformationDto dataTransformationDto, Loop2000 member) {
+    public void buildMemberDetail(DataTransformationDto dataTransformationDto,
+                                  List<TestMemberEntityCodes> testMemberEntityCodes,
+                                  Loop2000 member,
+                                  LocalDateTime transactionReceivedDate) {
         TransactionMemberDto memberDto = TransactionMemberDto.builder()
                 .identifiers(new ArrayList<>())
                 .build();
+        // Check if member entity codes needs to be populated
+        // this is done for testing purposes
+        Map<String, List<String>> entityCodes = dataTransformerUtil.getMemberEntityCodes(testMemberEntityCodes, member);
+        if(entityCodes != null){
+            memberDto.setEntityCodes(entityCodes);
+        }
         // Populate the details from INS segment
         populateMemberTransactionInfo(memberDto, member.getMemberDetail());
         // Populate member demographics
@@ -87,17 +105,17 @@ public class TransactionMemberHelperImpl implements TransactionMemberHelper {
         // Get member effective date
         populateMemberDates(memberDto, member);
         // Retrieve all the identifiers from the transaction for the member
-        identifierHelper.buildMemberIdentifier(memberDto, member);
+        identifierHelper.buildMemberIdentifier(memberDto, member, transactionReceivedDate);
         // Retrieve member residential and mailing address from the transaction
-        addressHelper.buildMemberAddress(memberDto,member);
+        addressHelper.buildMemberAddress(memberDto,member, transactionReceivedDate);
         // Retrieve all the member phones from the transaction
-        memberPhoneHelper.buildMemberPhone(memberDto, member.getMemberDemographics().getMemberCommunication());
+        memberPhoneHelper.buildMemberPhone(memberDto, member.getMemberDemographics().getMemberCommunication(), transactionReceivedDate);
         // Retrieve all the member emails from the transaction
-        memberEmailHelper.buildMemberEmail(memberDto, member.getMemberDemographics().getMemberCommunication());
+        memberEmailHelper.buildMemberEmail(memberDto, member.getMemberDemographics().getMemberCommunication(), transactionReceivedDate);
         // Retrieve all the member languages from the transaction
-        memberLanguageHelper.buildMemberLanguage(memberDto, member.getMemberDemographics().getMemberLanguages());
+        memberLanguageHelper.buildMemberLanguage(memberDto, member.getMemberDemographics().getMemberLanguages(), transactionReceivedDate);
         // Retrieve all the alternate contacts from the transaction
-        memberAlternateContactHelper.buildAlternateContactInfo(memberDto, member);
+        memberAlternateContactHelper.buildAlternateContactInfo(memberDto, member, transactionReceivedDate);
         dataTransformationDto.getTransactionDto().getMembers().add(memberDto);
     }
 

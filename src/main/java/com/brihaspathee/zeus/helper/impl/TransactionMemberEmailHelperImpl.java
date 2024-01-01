@@ -30,16 +30,19 @@ public class TransactionMemberEmailHelperImpl implements TransactionMemberEmailH
      * Build Member Email information
      * @param memberDto
      * @param communications
+     * @param transactionReceivedDate
      */
     @Override
-    public void buildMemberEmail(TransactionMemberDto memberDto, PER communications) {
+    public void buildMemberEmail(TransactionMemberDto memberDto,
+                                 PER communications,
+                                 LocalDateTime transactionReceivedDate) {
         if(communications == null){
             return;
         }
         List<TransactionMemberEmailDto> emailDtos = new ArrayList<>();
-        retrieveEmail(emailDtos, communications.getPer03(), communications.getPer04());
-        retrieveEmail(emailDtos, communications.getPer05(), communications.getPer06());
-        retrieveEmail(emailDtos, communications.getPer07(), communications.getPer08());
+        retrieveEmail(emailDtos, communications.getPer03(), communications.getPer04(), transactionReceivedDate);
+        retrieveEmail(emailDtos, communications.getPer05(), communications.getPer06(), transactionReceivedDate);
+        retrieveEmail(emailDtos, communications.getPer07(), communications.getPer08(), transactionReceivedDate);
         if(emailDtos.size() > 0){
             memberDto.setEmails(emailDtos);
         }
@@ -50,12 +53,16 @@ public class TransactionMemberEmailHelperImpl implements TransactionMemberEmailH
      * @param emailDtos
      * @param commType
      * @param commValue
+     * @param transactionReceivedDate
      */
-    private void retrieveEmail(List<TransactionMemberEmailDto> emailDtos, String commType, String commValue){
+    private void retrieveEmail(List<TransactionMemberEmailDto> emailDtos,
+                               String commType,
+                               String commValue,
+                               LocalDateTime transactionReceivedDate){
         if(commValue != null && commType.equals("EM")){
             TransactionMemberEmailDto memberEmailDto = TransactionMemberEmailDto.builder()
                     .email(commValue)
-                    .receivedDate(LocalDateTime.now())
+                    .receivedDate(transactionReceivedDate)
                     .build();
             emailDtos.add(memberEmailDto);
         }

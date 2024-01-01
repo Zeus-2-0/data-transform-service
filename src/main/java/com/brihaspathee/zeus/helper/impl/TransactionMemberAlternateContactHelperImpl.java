@@ -41,16 +41,19 @@ public class TransactionMemberAlternateContactHelperImpl implements TransactionM
      * Build Alternate Contact information of the member
      * @param memberDto
      * @param member
+     * @param transactionReceivedDate
      */
     @Override
-    public void buildAlternateContactInfo(TransactionMemberDto memberDto, Loop2000 member) {
+    public void buildAlternateContactInfo(TransactionMemberDto memberDto,
+                                          Loop2000 member,
+                                          LocalDateTime transactionReceivedDate) {
         List<TransactionAlternateContactDto> alternateContactDtos = new ArrayList<>();
         if(member.getCustodialParent() != null){
             // build the custodial parent information
             alternateContactDtos.add(createAlternateContact(member.getCustodialParent().getCustodialParentName(),
                     member.getCustodialParent().getCustodialParentCommunications(),
                     member.getCustodialParent().getCustodialParentAddressLine(),
-                    member.getCustodialParent().getCustodialParentCityStateZip()));
+                    member.getCustodialParent().getCustodialParentCityStateZip(), transactionReceivedDate));
         }
         if(member.getResponsiblePersons() != null && member.getResponsiblePersons().size() > 0){
             // build the responsible person information
@@ -58,7 +61,7 @@ public class TransactionMemberAlternateContactHelperImpl implements TransactionM
                 alternateContactDtos.add(createAlternateContact(responsiblePerson.getResponsiblePersonName(),
                         responsiblePerson.getResponsiblePersonCommunications(),
                         responsiblePerson.getResponsiblePersonAddressLine(),
-                        responsiblePerson.getResponsiblePersonCityStateZip()));
+                        responsiblePerson.getResponsiblePersonCityStateZip(), transactionReceivedDate));
             });
         }
         if(member.getEmployers() != null && member.getEmployers().size() > 0){
@@ -67,7 +70,7 @@ public class TransactionMemberAlternateContactHelperImpl implements TransactionM
                 alternateContactDtos.add(createAlternateContact(employer.getMemberEmployerName(),
                         employer.getMemberEmployerCommunications(),
                         employer.getMemberEmployerAddressLine(),
-                        employer.getMemberEmployerCityStateZip()));
+                        employer.getMemberEmployerCityStateZip(), transactionReceivedDate));
             });
         }
         if(member.getSchools() != null && member.getSchools().size() > 0){
@@ -76,7 +79,7 @@ public class TransactionMemberAlternateContactHelperImpl implements TransactionM
                 alternateContactDtos.add(createAlternateContact(school.getMemberSchoolName(),
                         school.getMemberSchoolCommunications(),
                         school.getMemberSchoolAddressLine(),
-                        school.getMemberSchoolCityStateZip()));
+                        school.getMemberSchoolCityStateZip(), transactionReceivedDate));
             });
         }
         if(alternateContactDtos.size() > 0){
@@ -90,12 +93,14 @@ public class TransactionMemberAlternateContactHelperImpl implements TransactionM
      * @param communications
      * @param addressLines
      * @param cityStateZip
+     * @param transactionReceivedDate
      * @return
      */
     private TransactionAlternateContactDto createAlternateContact(NM1 name,
                                                                   PER communications,
                                                                   N3 addressLines,
-                                                                  N4 cityStateZip){
+                                                                  N4 cityStateZip,
+                                                                  LocalDateTime transactionReceivedDate){
         XWalkResponse alternateContactType = referenceDataServiceHelper.getInternalRefData(name.getNm101(),
                 "Alternate Contact",
                 "EDI-834");
@@ -135,7 +140,7 @@ public class TransactionMemberAlternateContactHelperImpl implements TransactionM
             alternateContactDto.setStateTypeCode(cityStateZip.getN402());
             alternateContactDto.setZipCode(cityStateZip.getN403());
         }
-        alternateContactDto.setReceivedDate(LocalDateTime.now());
+        alternateContactDto.setReceivedDate(transactionReceivedDate);
         return alternateContactDto;
     }
 

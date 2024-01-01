@@ -32,20 +32,21 @@ public class TransactionMemberAddressHelperImpl implements TransactionMemberAddr
      * Build member address
      * @param memberDto
      * @param member
+     * @param transactionReceivedDate
      */
     @Override
-    public void buildMemberAddress(TransactionMemberDto memberDto, Loop2000 member) {
+    public void buildMemberAddress(TransactionMemberDto memberDto, Loop2000 member, LocalDateTime transactionReceivedDate) {
         List<TransactionMemberAddressDto> memberAddressDtos = new ArrayList<>();
         TransactionMemberAddressDto residence = buildMemberAddress("RESIDENCE",
                 member.getMemberDemographics().getMemberAddressLine(),
-                member.getMemberDemographics().getMemberCityStateZip());
+                member.getMemberDemographics().getMemberCityStateZip(), transactionReceivedDate);
         if(residence != null){
             memberAddressDtos.add(residence);
         }
         if(member.getMemberMailingAddress() != null){
             TransactionMemberAddressDto mailing = buildMemberAddress("MAIL",
                     member.getMemberMailingAddress().getMemberAddressLine(),
-                    member.getMemberMailingAddress().getMemberCityStateZip());
+                    member.getMemberMailingAddress().getMemberCityStateZip(), transactionReceivedDate);
             if(mailing != null){
                 memberAddressDtos.add(mailing);
             }
@@ -56,7 +57,15 @@ public class TransactionMemberAddressHelperImpl implements TransactionMemberAddr
         }
     }
 
-    private TransactionMemberAddressDto buildMemberAddress(String addressType, N3 addressLine, N4 cityStateZip){
+    /**
+     * Build member address
+     * @param addressType
+     * @param addressLine
+     * @param cityStateZip
+     * @param transactionReceivedDate
+     * @return
+     */
+    private TransactionMemberAddressDto buildMemberAddress(String addressType, N3 addressLine, N4 cityStateZip, LocalDateTime transactionReceivedDate){
         if(addressLine == null || cityStateZip == null){
             return null;
         }
@@ -68,7 +77,7 @@ public class TransactionMemberAddressHelperImpl implements TransactionMemberAddr
                 .stateTypeCode(cityStateZip.getN402())
                 .zipCode(cityStateZip.getN403())
                 .countyCode(cityStateZip.getN406())
-                .receivedDate(LocalDateTime.now())
+                .receivedDate(transactionReceivedDate)
                 .build();
         return addressDto;
     }

@@ -3,6 +3,8 @@ package com.brihaspathee.zeus.helper.interfaces;
 import com.brihaspathee.zeus.dto.transaction.TransactionMemberDto;
 import com.brihaspathee.zeus.edi.models.enrollment.Loop2000;
 
+import java.time.LocalDateTime;
+
 /**
  * Created in Intellij IDEA
  * User: Balaji Varadharajan
@@ -17,8 +19,10 @@ public interface TransactionMemberAddressHelper {
     /**
      * Build Member Address
      * @param memberDto
-     * @param member
+     * @param member,
+     * @param transactionReceivedDate
      */
     void buildMemberAddress(TransactionMemberDto memberDto,
-                            Loop2000 member);
+                            Loop2000 member,
+                            LocalDateTime transactionReceivedDate);
 }
