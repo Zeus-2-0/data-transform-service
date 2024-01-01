@@ -100,7 +100,7 @@ public class DataTransformerImpl implements DataTransformer {
         transactionBrokerHelper.buildTransactionBroker(dataTransformationDto, rawTransactionDto, transactionReceivedDate);
         // todo - Build the member details
         List<TestMemberEntityCodes> testMemberEntityCodes = dataTransformerUtil.getMemberEntityCodes(
-                rawTransactionDto.getZeusTransactionControlNumber().getAccountEntityCodes());
+                rawTransactionDto.getZeusTransactionControlNumber());
         rawTransactionDto.getTransaction().getMembers().stream().forEach(member -> {
             transactionMemberHelper.buildMemberDetail(dataTransformationDto,
                     testMemberEntityCodes,
@@ -129,7 +129,7 @@ public class DataTransformerImpl implements DataTransformer {
                 .transactionDto(TransactionDto.builder()
                         .zfcn(rawTransactionDto.getZfcn())
                         .ztcn(rawTransactionDto.getZtcn())
-                        .entityCodes(dataTransformerUtil.getAccountEntityCodes(rawTransactionDto.getZeusTransactionControlNumber().getAccountEntityCodes()))
+                        .entityCodes(dataTransformerUtil.getAccountEntityCodes(rawTransactionDto.getZeusTransactionControlNumber()))
                         .transactionReceivedDate(transactionReceivedDate)
                         .transactionSourceTypeCode("MARKETPLACE")
                         .transactionDetail(TransactionDetailDto.builder().build())
