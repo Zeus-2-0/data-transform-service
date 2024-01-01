@@ -4,6 +4,7 @@ import com.brihaspathee.zeus.edi.models.common.REF;
 import com.brihaspathee.zeus.edi.models.enrollment.Loop2000;
 import com.brihaspathee.zeus.test.TestAccountEntityCodes;
 import com.brihaspathee.zeus.test.TestMemberEntityCodes;
+import com.brihaspathee.zeus.test.ZeusTransactionControlNumber;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.env.Environment;
@@ -32,26 +33,28 @@ public class DataTransformerUtil {
 
     /**
      * Populate the entity codes if they are available in the transaction
-     * @param accountEntityCodes
+     * @param zeusTransactionControlNumber
      * @return
      */
-    public Map<String, List<String>> getAccountEntityCodes(TestAccountEntityCodes accountEntityCodes){
-        if(accountEntityCodes == null){
+    public Map<String, List<String>> getAccountEntityCodes(ZeusTransactionControlNumber zeusTransactionControlNumber){
+        if(zeusTransactionControlNumber == null ||
+                zeusTransactionControlNumber.getAccountEntityCodes() == null){
             return null;
         }
-        return accountEntityCodes.getEntityCodes();
+        return zeusTransactionControlNumber.getAccountEntityCodes().getEntityCodes();
     }
 
     /**
      * Return the list of member entity codes
-     * @param accountEntityCodes
+     * @param zeusTransactionControlNumber
      * @return
      */
-    public List<TestMemberEntityCodes> getMemberEntityCodes(TestAccountEntityCodes accountEntityCodes){
-        if(accountEntityCodes == null){
+    public List<TestMemberEntityCodes> getMemberEntityCodes(ZeusTransactionControlNumber zeusTransactionControlNumber){
+        if(zeusTransactionControlNumber == null ||
+                zeusTransactionControlNumber.getAccountEntityCodes() == null){
             return null;
         }
-        return accountEntityCodes.getMemberEntityCodes();
+        return zeusTransactionControlNumber.getAccountEntityCodes().getMemberEntityCodes();
     }
 
     /**
