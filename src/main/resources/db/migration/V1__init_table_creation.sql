@@ -1,9 +1,11 @@
-DROP TABLE  IF EXISTS `datatransformdb`.`transaction_info`;
-CREATE TABLE IF NOT EXISTS `datatransformdb`.`transaction_info` (
-    `transaction_info_sk` VARCHAR(36) NOT NULL,
-    `file_id` VARCHAR(100) NULL,
-    PRIMARY KEY (`transaction_info_sk`))
-    ENGINE = InnoDB;
+-- DROP TABLE  IF EXISTS `datatransformdb`.`transaction_info`;
+DROP TABLE  IF EXISTS `datatransformdb`.`payload_tracker`;
+DROP TABLE  IF EXISTS `datatransformdb`.`payload_tracker_detail`;
+-- CREATE TABLE IF NOT EXISTS `datatransformdb`.`transaction_info` (
+--     `transaction_info_sk` VARCHAR(36) NOT NULL,
+--     `file_id` VARCHAR(100) NULL,
+--     PRIMARY KEY (`transaction_info_sk`))
+--     ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `datatransformdb`.`payload_tracker` (
     `payload_tracker_sk` VARCHAR(36) NOT NULL,
     `payload_id` VARCHAR(45) NOT NULL COMMENT 'A unique id assigned for the payload',
