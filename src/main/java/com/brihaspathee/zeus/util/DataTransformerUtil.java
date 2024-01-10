@@ -80,6 +80,25 @@ public class DataTransformerUtil {
     }
 
     /**
+     * Return the entity codes the needs to be used for the member while creating the transaction
+     * @param transactionMemberEntityCodes
+     * @param member
+     * @return
+     */
+    public Map<String, List<String>> getTransactionMemberEntityCodes(Map<String,Map<String, List<String>>> transactionMemberEntityCodes,
+                                                                     Loop2000 member){
+        if(transactionMemberEntityCodes == null){
+            return null;
+        }
+        String exchangeMemberId = getExchangeMemberId(member);
+        if (exchangeMemberId == null){
+            return null;
+        }else{
+            return transactionMemberEntityCodes.get(exchangeMemberId);
+        }
+    }
+
+    /**
      * Get the exchange member id of the member
      * @param member
      * @return

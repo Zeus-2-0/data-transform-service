@@ -99,8 +99,8 @@ public class DataTransformerImpl implements DataTransformer {
         // todo - Build the broker details
         transactionBrokerHelper.buildTransactionBroker(dataTransformationDto, rawTransactionDto, transactionReceivedDate);
         // todo - Build the member details
-        List<TestMemberEntityCodes> testMemberEntityCodes = dataTransformerUtil.getMemberEntityCodes(
-                rawTransactionDto.getZeusTransactionControlNumber());
+        List<TestMemberEntityCodes> testMemberEntityCodes = dataTransformerUtil.
+                getMemberEntityCodes(rawTransactionDto.getZeusTransactionControlNumber());
         rawTransactionDto.getTransaction().getMembers().stream().forEach(member -> {
             transactionMemberHelper.buildMemberDetail(dataTransformationDto,
                     testMemberEntityCodes,
