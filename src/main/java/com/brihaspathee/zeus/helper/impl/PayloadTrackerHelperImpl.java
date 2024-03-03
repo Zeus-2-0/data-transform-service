@@ -45,4 +45,12 @@ public class PayloadTrackerHelperImpl implements PayloadTrackerHelper {
     public PayloadTracker getPayloadTracker(String payloadId) {
         return payloadTrackerRepository.findPayloadTrackerByPayloadId(payloadId).orElseThrow();
     }
+
+    /**
+     * Clean up the payload tracker tables
+     */
+    @Override
+    public void deleteAll() {
+        payloadTrackerRepository.deleteAll();
+    }
 }

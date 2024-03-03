@@ -95,9 +95,7 @@ public class TransactionMemberHelperImpl implements TransactionMemberHelper {
         // Check if member entity codes needs to be populated
         // this is done for testing purposes
         Map<String, List<String>> entityCodes = dataTransformerUtil.getMemberEntityCodes(testMemberEntityCodes, member);
-        if(entityCodes != null){
-            memberDto.setEntityCodes(entityCodes);
-        }
+        memberDto.setEntityCodes(entityCodes);
         // Populate the details from INS segment
         populateMemberTransactionInfo(memberDto, member.getMemberDetail());
         // Populate member demographics

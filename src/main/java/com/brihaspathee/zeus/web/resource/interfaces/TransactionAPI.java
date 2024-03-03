@@ -36,7 +36,7 @@ public interface TransactionAPI {
     @Operation(
             method = "GET",
             description = "Get the details of the transaction by its id",
-            tags = {"transaction"}
+            tags = {"data-transformer"}
     )
     @ApiResponses(
             value = {
@@ -62,7 +62,7 @@ public interface TransactionAPI {
     @Operation(
             method = "POST",
             description = "Process the raw transaction received",
-            tags = {"transaction"}
+            tags = {"data-transformer"}
     )
     @ApiResponses(
             value = {
@@ -78,4 +78,24 @@ public interface TransactionAPI {
     @PostMapping("/{sendToTransactionManager}")
     ResponseEntity<ZeusApiResponse<DataTransformationDto>> processRawTransaction(@RequestBody RawTransactionDto rawTransactionDto,
                                                                                  @PathVariable boolean sendToTransactionManager) throws JsonProcessingException;
+
+    /**
+     * Clean up the entire db
+     * @return
+     */
+    @Operation(
+            operationId = "Delete all data",
+            method = "DELETE",
+            description = "Delete all data",
+            tags = {"data-transformer"}
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Data deleted successfully",
+                    content = {
+                            @Content(mediaType = "application/json",schema = @Schema(implementation = ZeusApiResponse.class))
+                    })
+    })
+    @DeleteMapping("/delete")
+    ResponseEntity<ZeusApiResponse<String>> cleanUp();
 }

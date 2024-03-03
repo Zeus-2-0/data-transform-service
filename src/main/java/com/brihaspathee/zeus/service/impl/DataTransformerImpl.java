@@ -76,6 +76,11 @@ public class DataTransformerImpl implements DataTransformer {
     private final DataTransformerUtil dataTransformerUtil;
 
     /**
+     * Payload tracker helper instance
+     */
+    private final PayloadTrackerHelper payloadTrackerHelper;
+
+    /**
      * Service to transform the raw transaction to transaction dto
      * @param rawTransactionDto
      * @param sendToTransactionManager
@@ -94,13 +99,13 @@ public class DataTransformerImpl implements DataTransformer {
         transactionDetailHelper.buildTransactionDetail(dataTransformationDto, rawTransactionDto);
         // build the sponsor detail received in the transaction
         transactionSponsorHelper.buildSponsor(dataTransformationDto, rawTransactionDto, transactionReceivedDate);
-        // TODO - Build the payer detail
+        // Build the payer detail
         transactionPayerHelper.buildTransactionPayer(dataTransformationDto, rawTransactionDto, transactionReceivedDate);
-        // todo - Build the broker details
+        // Build the broker details
         transactionBrokerHelper.buildTransactionBroker(dataTransformationDto, rawTransactionDto, transactionReceivedDate);
-        // todo - Build the member details
-        List<TestMemberEntityCodes> testMemberEntityCodes = dataTransformerUtil.getMemberEntityCodes(
-                rawTransactionDto.getZeusTransactionControlNumber());
+        // Build the member details
+        List<TestMemberEntityCodes> testMemberEntityCodes = dataTransformerUtil.
+                getMemberEntityCodes(rawTransactionDto.getZeusTransactionControlNumber());
         rawTransactionDto.getTransaction().getMembers().stream().forEach(member -> {
             transactionMemberHelper.buildMemberDetail(dataTransformationDto,
                     testMemberEntityCodes,
@@ -115,6 +120,14 @@ public class DataTransformerImpl implements DataTransformer {
             transactionProducer.publishTransaction(dataTransformationDto);
         }
         return dataTransformationDto;
+    }
+
+    /**
+     * Clean up the entire database
+     */
+    @Override
+    public void deleteAll() {
+        payloadTrackerHelper.deleteAll();
     }
 
     /**
