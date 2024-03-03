@@ -24,4 +24,9 @@ public interface DataTransformer {
      */
     DataTransformationDto transformTransaction(RawTransactionDto rawTransactionDto,
                                                boolean sendToTransactionManager) throws JsonProcessingException;
+
+    /**
+     * Clean up the entire database
+     */
+    void deleteAll();
 }

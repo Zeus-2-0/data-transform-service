@@ -76,4 +76,22 @@ public class TransactionResource implements TransactionAPI {
                 .build();
         return ResponseEntity.ok(apiResponse);
     }
+
+    /**
+     * Clean up the entire database
+     * @return
+     */
+    @Override
+    public ResponseEntity<ZeusApiResponse<String>> cleanUp() {
+        dataTransformer.deleteAll();
+        ZeusApiResponse<String> apiResponse = ZeusApiResponse.<String>builder()
+                .response("The data in data transformer service is cleaned up")
+                .statusCode(204)
+                .status(HttpStatus.NO_CONTENT)
+                .developerMessage(ApiResponseConstants.SUCCESS)
+                .message(ApiResponseConstants.SUCCESS_REASON)
+                .timestamp(LocalDateTime.now())
+                .build();
+        return new ResponseEntity<>(apiResponse, HttpStatus.NO_CONTENT);
+    }
 }
