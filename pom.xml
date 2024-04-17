@@ -9,7 +9,7 @@
     </parent>
     <groupId>com.brihaspathee.zeus</groupId>
     <artifactId>data-transform-service</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.3</version>
     <name>Data Transformation Service</name>
     <description>Service that takes raw EDI data and converts to ZEUS format</description>
     <url>http://www.brihaspathee.com</url>
@@ -31,7 +31,7 @@
         <!--        <developerConnection>scm:git:ssh://github.com:Zeus-2-0/reference-data-service.git</developerConnection>-->
         <developerConnection>scm:git:git@github.com:Zeus-2-0/data-transform-service.git</developerConnection>
         <url>scm:git:http://github.com/Zeus-2-0/data-transform-service</url>
-        <tag>1.0.0</tag>
+        <tag>data-transform-service-1.0.3</tag>
     </scm>
 
     <developers>
