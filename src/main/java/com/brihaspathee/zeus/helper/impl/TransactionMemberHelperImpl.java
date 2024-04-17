@@ -1,5 +1,6 @@
 package com.brihaspathee.zeus.helper.impl;
 
+import com.brihaspathee.zeus.constants.TransactionTypes;
 import com.brihaspathee.zeus.dto.transaction.TransactionMemberDto;
 import com.brihaspathee.zeus.dto.transaction.TransactionMemberIdentifierDto;
 import com.brihaspathee.zeus.edi.models.common.*;
@@ -149,31 +150,68 @@ public class TransactionMemberHelperImpl implements TransactionMemberHelper {
     private void populateMemberDates(TransactionMemberDto memberDto, Loop2000 member){
         // Try and get the dates from the health coverage loop
         Loop2300 healthCoverage = member.getHealthCoverages().iterator().next();
-        healthCoverage.getHealthCoverageDates().stream().forEach(date -> {
-            if(date.getDtp01().equals("348")){
-                memberDto.setEffectiveDate(LocalDate.parse(date.getDtp03(), DateTimeFormatter.BASIC_ISO_DATE));
-            }else if(date.getDtp01().equals("349")){
-                memberDto.setEndDate(LocalDate.parse(date.getDtp03(), DateTimeFormatter.BASIC_ISO_DATE));
+        String memberTransactionType = memberDto.getTransactionTypeCode();
+        LocalDate benefitBeginDate = getDate(healthCoverage, "348");
+        LocalDate benefitEndDate = getDate(healthCoverage, "349");
+
+        LocalDate eligibilityBeginDate = getDate(healthCoverage, "356");
+        LocalDate eligibilityEndDate = getDate(healthCoverage, "357");
+
+        if(memberTransactionType.equals(TransactionTypes.CANCELORTERM.toString())){
+            // For cancel and terms the effective date is the end date received in the transaction
+            if(benefitEndDate != null){
+                memberDto.setEffectiveDate(benefitEndDate);
+            }else if(eligibilityEndDate != null){
+                memberDto.setEffectiveDate(eligibilityEndDate);
             }
-        });
-        // if effective date is not present in the health coverage loop then look for it in member level dates
-        if(memberDto.getEffectiveDate() == null){
-            Optional<DTP> endDate = member.getMemberLevelDates().stream()
-                    .filter(date -> date.getDtp01().equals("356"))
-                    .findFirst();
-            if(endDate.isPresent()){
-                memberDto.setEndDate(LocalDate.parse(endDate.get().getDtp03(), DateTimeFormatter.BASIC_ISO_DATE));
+        }else{
+            // for all other transactions the effective date and end date are set appropriately
+            if(benefitBeginDate != null){
+                memberDto.setEffectiveDate(benefitBeginDate);
+            }else{
+                memberDto.setEffectiveDate(eligibilityBeginDate);
+            }
+            if(benefitEndDate != null){
+                memberDto.setEndDate(benefitEndDate);
+            }else {
+                memberDto.setEndDate(eligibilityEndDate);
             }
         }
-        // if end date is not present in the health coverage loop then look for it in member level dates
-        if(memberDto.getEndDate() == null){
-            Optional<DTP> endDate = member.getMemberLevelDates().stream()
-                    .filter(date -> date.getDtp01().equals("357"))
-                    .findFirst();
-            if(endDate.isPresent()){
-                memberDto.setEndDate(LocalDate.parse(endDate.get().getDtp03(), DateTimeFormatter.BASIC_ISO_DATE));
-            }
+//        healthCoverage.getHealthCoverageDates().stream().forEach(date -> {
+//            if(date.getDtp01().equals("348")){
+//                memberDto.setEffectiveDate(LocalDate.parse(date.getDtp03(), DateTimeFormatter.BASIC_ISO_DATE));
+//            }else if(date.getDtp01().equals("349")){
+//                memberDto.setEndDate(LocalDate.parse(date.getDtp03(), DateTimeFormatter.BASIC_ISO_DATE));
+//            }
+//        });
+//        // if effective date is not present in the health coverage loop then look for it in member level dates
+//        if(memberDto.getEffectiveDate() == null){
+//            Optional<DTP> endDate = member.getMemberLevelDates().stream()
+//                    .filter(date -> date.getDtp01().equals("356"))
+//                    .findFirst();
+//            if(endDate.isPresent()){
+//                memberDto.setEndDate(LocalDate.parse(endDate.get().getDtp03(), DateTimeFormatter.BASIC_ISO_DATE));
+//            }
+//        }
+//        // if end date is not present in the health coverage loop then look for it in member level dates
+//        if(memberDto.getEndDate() == null){
+//            Optional<DTP> endDate = member.getMemberLevelDates().stream()
+//                    .filter(date -> date.getDtp01().equals("357"))
+//                    .findFirst();
+//            if(endDate.isPresent()){
+//                memberDto.setEndDate(LocalDate.parse(endDate.get().getDtp03(), DateTimeFormatter.BASIC_ISO_DATE));
+//            }
+//
+//        }
+    }
 
+    private LocalDate getDate(Loop2300 healthCoverage, String dateTypeCode){
+        Optional<DTP> optionalBenefitBeginDate = healthCoverage.getHealthCoverageDates().stream()
+                .filter(dtp -> dtp.getDtp01().equals(dateTypeCode)).findFirst();
+        if(optionalBenefitBeginDate.isPresent()){
+            return LocalDate.parse(optionalBenefitBeginDate.get().getDtp03(), DateTimeFormatter.BASIC_ISO_DATE);
+        }else{
+            return null;
         }
     }
 
@@ -189,10 +227,10 @@ public class TransactionMemberHelperImpl implements TransactionMemberHelper {
         memberDto.setMiddleName(memberName.getNm105());
         memberDto.setLastName(memberName.getNm103());
         DMG dobGender = memberDemo.getMemberDemographics();
-        if(dobGender.getDmg02() != null){
+        if(dobGender!= null && dobGender.getDmg02() != null){
             memberDto.setDateOfBirth(LocalDate.parse(dobGender.getDmg02(), DateTimeFormatter.BASIC_ISO_DATE));
         }
-        if(dobGender.getDmg03() != null){
+        if(dobGender!= null && dobGender.getDmg03() != null){
             XWalkResponse genderResponse = referenceDataServiceHelper.getInternalRefData(
                     dobGender.getDmg03(),
                     "Gender",
@@ -213,15 +251,13 @@ public class TransactionMemberHelperImpl implements TransactionMemberHelper {
         Optional<Loop2710> memberRateCategory = member.getReportingCategories().getReportingCategories().stream().filter(reportingCategory -> {
            return reportingCategory.getReportingCategoryDetails().getReportingCategory().getN102().equals("PRE AMT 1");
         }).findFirst();
-        if(memberRateCategory.isPresent()){
-            memberDto.setMemberRate(
-                    BigDecimal.valueOf(
-                            Double.valueOf(
-                                    memberRateCategory.get()
-                                            .getReportingCategoryDetails()
-                                            .getCategoryReference()
-                                            .iterator().next()
-                                            .getRef02())));
-        }
+        memberRateCategory.ifPresent(loop2710 -> memberDto.setMemberRate(
+                BigDecimal.valueOf(
+                        Double.parseDouble(
+                                loop2710
+                                        .getReportingCategoryDetails()
+                                        .getCategoryReference()
+                                        .iterator().next()
+                                        .getRef02()))));
     }
 }

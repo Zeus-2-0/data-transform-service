@@ -1,5 +1,6 @@
 package com.brihaspathee.zeus.helper.impl;
 
+import com.brihaspathee.zeus.dto.account.MemberDto;
 import com.brihaspathee.zeus.dto.account.RawTransactionDto;
 import com.brihaspathee.zeus.dto.transaction.TransactionAttributeDto;
 import com.brihaspathee.zeus.dto.transaction.TransactionDetailDto;
@@ -60,6 +61,8 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
         Loop2000 primarySubscriber = getPrimaryMember(rawTransactionDto);
         // Get and Set the transaction type
         getTransactionType(dataTransformationDto, primarySubscriber);
+        // Get and Set the maintenance reason code
+        getMaintenanceReasonCode(dataTransformationDto, primarySubscriber);
         // Get and Set the coverage type (Family or Dependent)
         getCoverageType(dataTransformationDto, primarySubscriber);
         log.info("Data Transformation DTO after setting coverage type:{}", dataTransformationDto);
@@ -113,6 +116,23 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
         dataTransformationDto.getTransactionDto()
                 .getTransactionDetail()
                 .setTransactionTypeCode(
+                        xWalkResponse.getInternalListCode());
+    }
+
+    /**
+     * Get mainatenance reason code
+     * @param dataTransformationDto
+     * @param primaryMember
+     */
+    private void getMaintenanceReasonCode(DataTransformationDto dataTransformationDto,
+                                          Loop2000 primaryMember){
+        String maintenanceReasonCode = primaryMember.getMemberDetail().getIns04();
+        XWalkResponse xWalkResponse = referenceDataServiceHelper.getInternalRefData(maintenanceReasonCode,
+                "Reason",
+                "EDI-834");
+        dataTransformationDto.getTransactionDto()
+                .getTransactionDetail()
+                .setMaintenanceReasonCode(
                         xWalkResponse.getInternalListCode());
     }
 
@@ -222,10 +242,29 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
                     .messageType("CRITICAL")
                     .build();
             dataTransformationDto.getTransformationMessages().add(transformationMessage);
-        }else{
+        }else if(effectiveDate.isPresent()) {
             dataTransformationDto.getTransactionDto()
                     .getTransactionDetail()
-                    .setEffectiveDate(LocalDate.parse(effectiveDate.get().getDtp03(),DateTimeFormatter.BASIC_ISO_DATE));
+                    .setEffectiveDate(LocalDate.parse(
+                            effectiveDate.get().getDtp03(),
+                            DateTimeFormatter.BASIC_ISO_DATE));
+        }else{
+            // this means that the transaction is a Cancel or term (024) transaction
+            // so the effective date is end date
+            Optional<DTP> endDate = getEndDate(primaryMember);
+            if(endDate.isEmpty() && primaryMember.getMemberDetail().getIns03().equals("024")){
+                // if it is not present and the transaction is CANCEL/TERM
+                // set the transaction message
+                TransformationMessage transformationMessage = TransformationMessage.builder()
+                        .message("No end date present in the transaction")
+                        .messageCode("2000004")
+                        .messageType("CRITICAL")
+                        .build();
+                dataTransformationDto.getTransformationMessages().add(transformationMessage);
+            }
+            endDate.ifPresent(dtp -> dataTransformationDto.getTransactionDto()
+                    .getTransactionDetail()
+                    .setEffectiveDate(LocalDate.parse(dtp.getDtp03(), DateTimeFormatter.BASIC_ISO_DATE)));
         }
     }
 
@@ -236,7 +275,25 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
      */
     private void getEndDate(DataTransformationDto dataTransformationDto,
                                   Loop2000 primaryMember){
-        // Get the end date of the transaction from the primary subscriber
+        String transactionType = primaryMember.getMemberDetail().getIns03();
+        if(!transactionType.equals("024")){
+            // set the end date only if the transaction is not a cancel or term transaction
+            // if it is a cancel or term transaction then the 357 0r 349 date will be set
+            // as the effective date, since that is the date that the span is being canceled
+            // or termed
+            // Get the end date of the transaction from the primary subscriber
+            Optional<DTP> endDate = getEndDate(primaryMember);
+            endDate.ifPresent(dtp -> dataTransformationDto.getTransactionDto()
+                    .getTransactionDetail()
+                    .setEffectiveDate(LocalDate.parse(dtp.getDtp03(), DateTimeFormatter.BASIC_ISO_DATE)));
+        }
+    }
+
+    /**
+     * Get the end date from the transaction (357, 349)
+     * @param primaryMember
+     */
+    private Optional<DTP> getEndDate(Loop2000 primaryMember){
         Optional<DTP> endDate = primaryMember.getHealthCoverages().iterator().next().getHealthCoverageDates().stream().filter(coverageDate ->
                 coverageDate.getDtp01().equals("349")
         ).findFirst();
@@ -246,20 +303,7 @@ public class TransactionDetailHelperImpl implements TransactionDetailHelper {
                     .filter(
                             memberLevelDate -> memberLevelDate.getDtp01().equals("357")).findFirst();
         }
-        if(endDate.isEmpty() && primaryMember.getMemberDetail().getIns03().equals("024")){
-            // if it is not present and the transaction is CANCEL/TERM
-            // set the transaction message
-            TransformationMessage transformationMessage = TransformationMessage.builder()
-                    .message("No end date present in the transaction")
-                    .messageCode("2000004")
-                    .messageType("CRITICAL")
-                    .build();
-            dataTransformationDto.getTransformationMessages().add(transformationMessage);
-        }else if (endDate.isPresent()){
-            dataTransformationDto.getTransactionDto()
-                    .getTransactionDetail()
-                    .setEffectiveDate(LocalDate.parse(endDate.get().getDtp03(),DateTimeFormatter.BASIC_ISO_DATE));
-        }
+        return endDate;
     }
 
     /**
