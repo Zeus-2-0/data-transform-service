@@ -4,12 +4,12 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.2.4</version>
+        <version>3.3.3</version>
         <relativePath /> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.brihaspathee.zeus</groupId>
     <artifactId>data-transform-service</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.4-SNAPSHOT</version>
     <name>Data Transformation Service</name>
     <description>Service that takes raw EDI data and converts to ZEUS format</description>
     <url>http://www.brihaspathee.com</url>
@@ -57,7 +57,7 @@
         <dependency>
             <groupId>com.brihaspathee.zeus</groupId>
             <artifactId>zeus-library</artifactId>
-            <version>2.0.21</version>
+            <version>2.0.27</version>
         </dependency>
         <dependency>
             <groupId>io.netty</groupId>
